@@ -118,6 +118,7 @@ import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:direct_select/direct_select.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -229,7 +230,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white.withOpacity(.94),
+        backgroundColor: Color.fromARGB(255, 198, 214, 186).withOpacity(.94),
         appBar: AppBar(
           title: const Text(
             "Alert Settings",
@@ -275,6 +276,60 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ],
               ),
+              const Text("Choose the days you want"),
+              Wrap(children: [
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('S'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('M'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('T'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('W'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('T'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('F'),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () { },
+                  child: const Text('S'),
+                ),
+              ]),
+
+              const Text("Set Time"),
               Row(children: [
                 TextButton(
                   style: ButtonStyle(
@@ -291,18 +346,6 @@ class _MyAppState extends State<MyApp> {
                   child: const Text('End'),
                 ),
               ]),
-              
-              // You can add a settings title
-              SettingsGroup(
-                settingsGroupTitle: "Choose the days you want",
-                items: [
-                  SettingsItem(
-                    onTap: () {},
-                    icons: Icons.exit_to_app_rounded,
-                    title: "Sign Out",
-                  ),                  
-                ],
-              ),
               Wrap(children: [
                   DirectSelect(
                     itemExtent: 35.0,
@@ -397,6 +440,27 @@ class _MyAppState extends State<MyApp> {
               // ),
             ],
           ),
+        ),
+
+        bottomNavigationBar: BottomNavigationBar(
+          items: const[
+            BottomNavigationBarItem(
+              icon : Icon(Icons.home),
+              label : 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon : Icon(Icons.home),
+              label : 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon : Icon(Icons.business),
+              label : 'Exercise',
+            ),
+            BottomNavigationBarItem(
+              icon : Icon(Icons.school),
+              label : 'Alerts',
+            ),
+          ]
         ),
       ),
     );
