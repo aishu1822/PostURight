@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'alert_settings.dart';
 import 'exercises.dart';
 import 'profile.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,10 +40,10 @@ class AppState extends State<App> {
 
   void _loadScreen() {
     switch(_currentIndex) {
-      case 0: return setState(() => _currentWidget = App());
+      case 0: return setState(() => _currentWidget = HomePage(title: 'Home'));
       case 1: return setState(() => _currentWidget = ProfilePage(title: 'Profile'));
       case 2: return setState(() => _currentWidget = ExercisesPage(title: 'Exercises'));
-      case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings',));    
+      case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
     }
   }
  

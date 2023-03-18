@@ -41,6 +41,7 @@ dependencies:
   horizontal_week_calendar: ^0.0.7
   direct_select: ^2.0.0
   colorful_background: ^0.0.4
+  linear_progress_bar: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +66,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/Frame4.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
