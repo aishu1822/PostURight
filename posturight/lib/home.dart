@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'calendar.dart';
+import 'package:calender_picker/calender_picker.dart';
+import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.title, Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double buttonDayHeightWidth = 40;
+  var _selectedValue = DateTime.now();
 
   @override
   void initState() {
@@ -21,59 +26,59 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        
         Padding(padding: const EdgeInsets.all(10),),
-        Wrap(children:[
-        SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: 
-                      Card(
-                        // clipBehavior is necessary because, without it, the InkWell's animation
-                        // will extend beyond the rounded edges of the [Card] (see https://github.com/flutter/flutter/issues/109776)
-                        // This comes with a small performance cost, and you should not set [clipBehavior]
-                        // unless you need it.
-                        clipBehavior: Clip.hardEdge,
-                        child: InkWell(
-                          splashColor: Colors.blue.withAlpha(30),
-                          onTap: () {
-                            debugPrint('Card tapped.');
-                          },
-                          child: const SizedBox(
-                            width: 300,
-                            height: 100,
-                            child: Text('A card that can be tapped'),
-                          ),
-                        ),
-                      ),
-                    
-        ),
-        SizedBox(
-          height: 40,
-          width: 40,
-          child: 
-            Card(
-              // clipBehavior is necessary because, without it, the InkWell's animation
-              // will extend beyond the rounded edges of the [Card] (see https://github.com/flutter/flutter/issues/109776)
-              // This comes with a small performance cost, and you should not set [clipBehavior]
-              // unless you need it.
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                onTap: () {
-                  debugPrint('Card tapped.');
-                },
-                child: const SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: Text('A card that can be tapped'),
-                ),
-              ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CalenderPicker(
+              DateTime.now(),
+              initialSelectedDate: DateTime.now(),
+              selectionColor: Colors.black,
+              selectedTextColor: Colors.white,
+              onDateChange: (date) {
+                // New date selected
+                setState(() {
+                  _selectedValue = date;
+                });
+              },
             ),
-          
-        ),
-        ],
-        ),
+            Container(
+              height: 200,
+              width: 300,
+              child: Card(
+                  child: 
+                    SimpleCircularProgressBar(
+                        mergeMode: true,
+                        onGetText: (double value) {
+                            return Text('${value.toInt()}%');
+                        },
+                    ),
+                ),
+            ),
+            Wrap(
+              children: [
+                Card(
+                  child: 
+                    SimpleCircularProgressBar(
+                        mergeMode: true,
+                        onGetText: (double value) {
+                            return Text('${value.toInt()}%');
+                        },
+                    ),
+                ),
+                Card(
+                  child: 
+                    SimpleCircularProgressBar(
+                        mergeMode: true,
+                        onGetText: (double value) {
+                            return Text('${value.toInt()}%');
+                        },
+                    ),
+                ),
+              ]
+            )
+          ],
+      )
       ],
 
     );

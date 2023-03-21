@@ -12,7 +12,7 @@ class AlertSettingsPage extends StatefulWidget {
 
 class _AlertSettingsPageState extends State<AlertSettingsPage> {
   late FixedExtentScrollController _controller;
-  final double buttonDayHeightWidth = 30;
+  double buttonDayHeightWidth = 40;
   bool _vibrationOn = false;
 
   @override
@@ -27,7 +27,7 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
   Widget build(BuildContext context) {
     return MaterialApp (
       home: Scaffold(
-      backgroundColor: Color.fromARGB(255, 189, 211, 182),
+      backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView( 
@@ -67,6 +67,8 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
                 ),
                 const Text("Choose the days you want"),
                 Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
                   children: [
                   SizedBox(
                     height: buttonDayHeightWidth,
@@ -155,7 +157,10 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
                 ]),
 
                 const Text("Set Time"),
-                Row(children: [
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  children: [
                   OutlinedButton(
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),

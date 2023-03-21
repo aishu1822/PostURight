@@ -51,7 +51,8 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp (
       home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 198, 214, 186).withOpacity(.94),
+        backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
+        // Color.fromARGB(255, 182, 224, 207).withOpacity(.94),///Color.fromARGB(255, 204, 214, 186).withOpacity(.94),
         // appBar: AppBar(
         //   title: const Text(
         //     "PostURight",
@@ -69,6 +70,9 @@ class AppState extends State<App> {
         // ),
 
         bottomNavigationBar: BottomNavigationBar(
+          // fixedColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
+          selectedItemColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
+          unselectedItemColor: Color.fromARGB(255, 37, 5, 220).withOpacity(.94),
           items: const[
             BottomNavigationBarItem(
               icon : Icon(Icons.home),

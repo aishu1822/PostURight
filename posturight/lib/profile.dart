@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // return Container();
      return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 198, 214, 186).withOpacity(.94),
+        backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
         appBar: AppBar(
           title: Text(
             "Profile",
