@@ -3,6 +3,7 @@ import 'alert_settings.dart';
 import 'exercises.dart';
 import 'profile.dart';
 import 'home.dart';
+import 'title.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class App extends StatefulWidget {
 class AppState extends State<App> {
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
-  Widget _currentWidget = Container();
+  Widget _currentWidget = TitleScreen();//Container();
 
   void _loadScreen() {
     switch(_currentIndex) {
