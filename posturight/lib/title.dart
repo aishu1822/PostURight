@@ -58,9 +58,7 @@ class TitleScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.only(
-                                                    top: 5,
-                                                  ),//getPadding(top: 5),
+                                        padding: const EdgeInsets.only(top: 5,),//getPadding(top: 5),
                                         child: RichText(
                                             text: const TextSpan(children: [
                                               TextSpan(

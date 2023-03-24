@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:posturight/progess_card.dart';
+import 'colors.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({required this.title, Key? key}) : super(key: key);
@@ -25,11 +26,11 @@ class _ProfilePageState extends State<ProfilePage> {
     // return Container();
      return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
+        backgroundColor: c1,
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "Profile",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -44,10 +45,30 @@ class _ProfilePageState extends State<ProfilePage> {
               //   userName: "Nom de l'utilisateur",
               //   userProfilePic: AssetImage("assets\\Frame4.png"),
               // ),
-              Image.asset(
-                'assets/Frame4.png',
-                width: 100,
-                height: 100,
+              Column (
+                children: [
+                  ClipOval(
+                    child: SizedBox.fromSize(
+                      size: const Size.fromRadius(48), // Image radius
+                      child: Image.asset(
+                                      'assets/Frame4.png',
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                    ),
+                  ),
+                  const Text(
+                    "Jane Doe",
+                    textAlign: TextAlign.center,
+                  ),
+                  const Text(
+                    "15 Friends",
+                    textAlign: TextAlign.center,
+                  ),
+                  const Text(
+                    "Level 12 | 2 day streak",
+                    textAlign: TextAlign.center,
+                  ),]
               ),
               MyCard(),
               Card(
@@ -61,13 +82,75 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     debugPrint('Card tapped.');
                   },
-                  child: const SizedBox(
-                    width: 300,
-                    height: 100,
-                    child: Text('Friend Leaderboard'),
+                  child: 
+                  // const SizedBox(
+                  //   width: 300,
+                  //   height: 100,
+                  //   child: Text("Friend Leaderboard",
+                  //               overflow: TextOverflow.ellipsis,
+                  //               textAlign: TextAlign.left,
+                  //               /*style: AppStyle.txtSFProRegular12*/),
+                  // ),
+                  Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                 Text("Friend Leaderboard",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      /*style: AppStyle.txtSFProRegular12*/),
+                                Padding(
+                                    padding:const EdgeInsets.only(top: 14,),
+                                    child: Row(children: [
+                                      // CustomImageView(
+                                      //     imagePath: ImageConstant.imgEllipse8,
+                                      //     height: getVerticalSize(37),
+                                      //     width: getHorizontalSize(36),
+                                      //     radius: BorderRadius.circular(
+                                      //         getHorizontalSize(18))),
+                                      Padding(
+                                          padding: const EdgeInsets.only(top: 8, left: 13,),
+                                          child:Text("John",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.left,
+                                              /*style:AppStyle.txtPoppinsMedium14*/),),
+                                    ])),
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 23,),
+                                    child: Row(children: [
+                                      // CustomImageView(
+                                      //     imagePath: ImageConstant.imgEllipse9,
+                                      //     height: getSize(36),
+                                      //     width: getSize(36),
+                                      //     radius: BorderRadius.circular(getHorizontalSize(18))),
+                                      Padding(
+                                          padding: const EdgeInsets.only(top: 8, left: 13,),
+                                          child: Text("Jane",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.left,
+                                              /*style:AppStyle.txtPoppinsMedium14*/))
+                                    ])),
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 21, bottom:10),
+                                    child: Row(children: [
+                                      // CustomImageView(
+                                      //     imagePath: ImageConstant.imgEllipse11,
+                                      //     height: getSize(36),
+                                      //     width: getSize(36),
+                                      //     radius: BorderRadius.circular(
+                                      //         getHorizontalSize(18))),
+                                      Padding(
+                                          padding: const EdgeInsets.only(top: 8, left: 13,),
+                                          child: Text("Jane",
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.left,
+                                              /*style:AppStyle.txtPoppinsMedium14*/))
+                                    ])),
+                                  ]
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),

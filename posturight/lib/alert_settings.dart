@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'time.dart';
+import 'colors.dart';
 
 class AlertSettingsPage extends StatefulWidget {
   const AlertSettingsPage({required this.title, Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
   Widget build(BuildContext context) {
     return MaterialApp (
       home: Scaffold(
-      backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
+      backgroundColor: c1,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView( 
