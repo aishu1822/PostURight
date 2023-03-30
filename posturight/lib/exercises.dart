@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'colors.dart';
+
 class Exercises extends StatelessWidget {
   const Exercises({Key? key}) : super(key: key);
   @override
@@ -45,6 +47,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBackgroundColor,
       appBar: AppBar(
         title: Text(widget.title),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
+import 'style.dart';
 
 // ignore_for_file: must_be_immutable
 class Registration1Screen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _Registration1ScreenState extends State<Registration1Screen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            backgroundColor: c1,
+            backgroundColor: appBackgroundColor,
             resizeToAvoidBottomInset: false,
             body: Container(
                 width: double.maxFinite,
@@ -32,7 +33,7 @@ class _Registration1ScreenState extends State<Registration1Screen> {
                           child: Text("Tell us more about yourself",
                                 maxLines: null,
                                 textAlign: TextAlign.left,
-                                // style: AppStyle.txtSFProSemibold28
+                                style: Style.txtSFProSemibold28
                               )
                           ),
                       Padding(
@@ -41,7 +42,7 @@ class _Registration1ScreenState extends State<Registration1Screen> {
                           child: Text("What is your name?",
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                                // style: AppStyle.txtRobotoRegular16
+                                style: Style.txtRobotoRegular16
                               )
                           ),
                       TextFormField(

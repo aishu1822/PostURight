@@ -28,7 +28,7 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
   Widget build(BuildContext context) {
     return MaterialApp (
       home: Scaffold(
-      backgroundColor: c1,
+      backgroundColor: appBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView( 
