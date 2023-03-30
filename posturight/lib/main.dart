@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:posturight/registration1.dart';
+import 'package:posturight/welcome.dart';
 import 'alert_settings.dart';
 import 'exercises.dart';
 import 'profile.dart';
@@ -37,7 +39,8 @@ class App extends StatefulWidget {
 class AppState extends State<App> {
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
-  Widget _currentWidget = TitleScreen();//Container();
+  Widget _currentWidget = Registration1Screen();
+  //WelcomeScreen();//TitleScreen();//Container();
 
   void _loadScreen() {
     switch(_currentIndex) {
