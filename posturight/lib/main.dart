@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:posturight/registration1.dart';
 import 'package:posturight/registration2.dart';
+import 'package:posturight/registration3.dart';
 import 'package:posturight/welcome.dart';
 import 'alert_settings.dart';
 import 'exercises.dart';
@@ -19,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PostURight',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.red,
+      // ),
       home:const App(),
     );
   }
@@ -40,7 +41,7 @@ class App extends StatefulWidget {
 class AppState extends State<App> {
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
-  Widget _currentWidget = Registration2Screen();//Registration1Screen();
+  Widget _currentWidget = Registration3Screen();//Registration1Screen();
   //WelcomeScreen();//TitleScreen();//Container();
 
   void _loadScreen() {

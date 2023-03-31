@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
+import 'style.dart';
 
 class Exercises extends StatelessWidget {
   const Exercises({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class ExercisesPage extends StatefulWidget {
   _ExercisesPageState createState() => _ExercisesPageState();
 }
 class _ExercisesPageState extends State<ExercisesPage> {
-  final List<Map<String, dynamic>> _allUsers = [    {"id": 1, "Exercise": "Downward dog"},    {"id": 2, "Exercise": "Plank"},    {"id": 3, "Exercise": "Child's Pose"},    {"id": 4, "Exercise": "Flexibility"},    {"id": 5, "Exercise": "Wall Slides"},    {"id": 6, "Exercise": "Single leg extension"},    {"id": 7, "Exercise": "Shoulder stretch"},    {"id": 8, "Exercise": "Renegade Rows"},    {"id": 9, "Exercise": "Superman"},    {"id": 10, "Exercise": "Side plank"},  ];
+  final List<Map<String, dynamic>> _allUsers = [    {"id": 1, "Exercise": "Downward dog"},    {"id": 2, "Exercise": "Plank"},    {"id": 3, "Exercise": "Child's Pose"},    {"id": 4, "Exercise": "Flexibility"},    {"id": 5, "Exercise": "Wall Slides"},    {"id": 6, "Exercise": "Leg extension"},    {"id": 7, "Exercise": "Shoulder stretch"},    {"id": 8, "Exercise": "Renegade Rows"},    {"id": 9, "Exercise": "Superman"},    {"id": 10, "Exercise": "Side plank"},  ];
   final imgIconWidthHeight = 40.0;
   // This list holds the data for the list view
   List<Map<String, dynamic>> _foundUsers = [];
@@ -64,7 +65,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                   child: Text("Routines",
                       overflow:TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      /*style: AppStyle.txtRobotoRomanMedium28Teal900*/))),
+                      style: Style.txtRobotoRomanMedium28Teal900))),
           Card(
                 clipBehavior: Clip.hardEdge,
                 child: InkWell(
@@ -84,7 +85,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                               Text("Based on you activity level and preferences",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  /*style: AppStyle.txtSFProRegular12*/),
+                                  style: Style.txtSFProRegular12),
                             Padding(
                                 padding:const EdgeInsets.only(top: 14,),
                                 child: Wrap(children: [
@@ -143,7 +144,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              Text("Personalized Routine",
+                              Text("Routine 1",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   /*style: AppStyle.txtSFProRegular12*/),
@@ -176,7 +177,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                   child: Text("Exercises",
                       overflow:TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      /*style: AppStyle.txtRobotoRomanMedium28Teal900*/))),
+                      style: Style.txtRobotoRomanMedium28Teal900))),
           TextField(
             onChanged: (value) => _runFilter(value),
             decoration: const InputDecoration(
@@ -188,18 +189,37 @@ class _ExercisesPageState extends State<ExercisesPage> {
           Expanded(
             child: 
             // _foundUsers.isNotEmpty,
-                  ListView.builder(
+                  GridView.builder(
                     itemCount: _foundUsers.length,
-                    itemBuilder: (context, index) => Card(
+                    itemBuilder: (context, index) => SizedBox(
                       key: ValueKey(_foundUsers[index]["id"]),
-                      color: Color.fromARGB(255, 187, 229, 230),
-                      elevation: 4,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: ListTile(
-                        leading: Text(_foundUsers[index]["id"].toString()),
-                        title: Text(_foundUsers[index]["Exercise"]),
-                      ),
-                    ),
+                      // color: Color.fromARGB(255, 187, 229, 230),
+                      // elevation: 4,
+                      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0),),
+                      // margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: 
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: OutlinedButton(
+                                  style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue), 
+                                  ),
+                                  onPressed: () { },
+                                  child: const Text('S', textAlign: TextAlign.center,),
+                                ),
+                            ),
+                          Text(_foundUsers[index]["Exercise"]),
+                        ],)
+                      // ListTile(
+                      //   leading: Text(_foundUsers[index]["id"].toString()),
+                      //   title: Text(_foundUsers[index]["Exercise"]),
+                        
+                      // ),
+                    ), gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
                   // _allUsers()
                 ),
           ),

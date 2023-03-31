@@ -14,8 +14,8 @@ class AmPm extends StatelessWidget {
           child: Text(
             isItAm == true ? 'am' : 'pm',
             style: const TextStyle(
-              fontSize: 40,
-              color: Colors.white,
+              fontSize: 28,
+              color: Colors.teal,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -39,8 +39,8 @@ class MyHours extends StatelessWidget {
           child: Text(
             hours.toString(),
             style: const TextStyle(
-              fontSize: 40,
-              color: Colors.white,
+              fontSize: 28,
+              color: Colors.teal,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -64,8 +64,8 @@ class MyMinutes extends StatelessWidget {
           child: Text(
             mins < 10 ? '0' + mins.toString() : mins.toString(),
             style: const TextStyle(
-              fontSize: 40,
-              color: Colors.white,
+              fontSize: 28,
+              color: Colors.teal,
               fontWeight: FontWeight.bold,
             ),
           ),
