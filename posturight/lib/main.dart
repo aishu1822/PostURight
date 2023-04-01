@@ -1,16 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'firebase_options.dart';
+
 import 'package:flutter/material.dart';
 import 'package:posturight/registration1.dart';
 import 'package:posturight/registration2.dart';
 import 'package:posturight/registration3.dart';
-import 'package:posturight/welcome.dart';
+import 'package:posturight/login.dart';
 import 'alert_settings.dart';
 import 'exercises.dart';
 import 'profile.dart';
 import 'home.dart';
 import 'title.dart';
 
-void main() {
-  runApp(const MyApp());
+final database = FirebaseDatabase.instance.ref();
+// void main() {
+//   runApp(const MyApp());
+// }
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -39,6 +50,7 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
+
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
   Widget _currentWidget = Registration3Screen();//Registration1Screen();
@@ -55,6 +67,7 @@ class AppState extends State<App> {
  
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp (
       home: Scaffold(
         backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
@@ -74,6 +87,7 @@ class AppState extends State<App> {
         //   currentTab: _currentTab, 
         //   onSelectTab: _selectTab,
         // ),
+
 
         bottomNavigationBar: BottomNavigationBar(
           // fixedColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),

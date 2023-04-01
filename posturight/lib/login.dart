@@ -3,7 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'colors.dart';
 import 'style.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

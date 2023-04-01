@@ -4,6 +4,7 @@ import 'calendar.dart';
 import 'package:calender_picker/calender_picker.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'colors.dart';
+import 'main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.title, Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final profileRef = database.child("/profile");
     return MaterialApp( 
       
       home: Scaffold (
@@ -47,6 +49,22 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
+
+            ElevatedButton (
+              onPressed: () {
+                profileRef.set({'firstname': 'Jane', 'lastname': 'Doe'});
+              },
+              child: Text("Test set db"),
+            ),
+
+            ElevatedButton (
+              onPressed: () {
+                profileRef.set({'firstname': 'Jane', 'lastname': 'Doe'});
+              },
+              child: Text("Logout"),
+            ),
+
+
             Container(
               height: 200,
               width: 300,
