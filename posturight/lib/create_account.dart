@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:posturight/login.dart';
 import 'home.dart';
+import 'text_field.dart';
+import 'colors.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({Key? key}) : super(key: key);
@@ -9,9 +12,14 @@ class CreateAccountScreen extends StatefulWidget {
 }
 
 class CreateAccountScreenState extends State<CreateAccountScreen> {
+
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _emailTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBackgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar (
         backgroundColor: Colors.transparent,
@@ -32,15 +40,15 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // TODO: Enter Username
+                loginTextField("Enter username", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                // Enter email
+                loginTextField("Enter email", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                // Enter pw
+                loginTextField("Enter password", false, _passwordTextController),
                 const SizedBox(
                   height: 20,
                 ),

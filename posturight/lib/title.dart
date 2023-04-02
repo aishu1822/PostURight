@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:posturight/create_account.dart';
 import 'colors.dart';
+import 'login.dart';
 import 'style.dart';
 
 class TitleScreen extends StatelessWidget {
+
+  Function(Widget) callback;
+  TitleScreen({super.key, required this.callback});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            backgroundColor: appBackgroundColor,//ColorConstant.gray50,
+            backgroundColor: appBackgroundColor,
             body: Container(
                 width: double.maxFinite,
                 padding: const EdgeInsets.only(left: 24,right: 24,),
@@ -39,11 +45,10 @@ class TitleScreen extends StatelessWidget {
                       SizedBox(
                         height: 56,
                         child: OutlinedButton(
-                            // height: 56,//getVerticalSize(56),
-                            // variant: ButtonVariant.FillTeal700,
-                            // fontStyle: ButtonFontStyle.SFProBold20,
-                            // onTap: () => onTapGetstarted(context), onPressed: () {  },
-                            onPressed: () {  },
+                            onPressed: () { 
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => CreateAccountScreen()));
+                             },
                             child: const Text("Get Started"),
                         ),
                       ),
@@ -88,8 +93,19 @@ class TitleScreen extends StatelessWidget {
                                                       fontWeight:FontWeight.w700,
                                                       letterSpacing:0.4,))//getHorizontalSize(0.4)))
                                             ]),
-                                            textAlign: TextAlign.left))
-                                  ])))
+                                            textAlign: TextAlign.left)),
+                                            ElevatedButton(
+                                              onPressed: (){
+                                                // Navigator.push(context,
+                                                //   MaterialPageRoute(builder: (context) => LoginScreen()));
+                                                callback(LoginScreen());
+                                              }, 
+                                              child: Text("Login"),
+                                            )
+                                  ]
+                                )
+                              )
+                            )
                     ]))));
   }
 

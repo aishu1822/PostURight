@@ -13,6 +13,8 @@ import 'profile.dart';
 import 'home.dart';
 import 'title.dart';
 
+// import 'globals.dart';
+
 final database = FirebaseDatabase.instance.ref();
 // void main() {
 //   runApp(const MyApp());
@@ -29,12 +31,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'PostURight',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.red,
-      // ),
-      home:const App(),
+      home:App(),
     );
   }
 
@@ -53,8 +52,22 @@ class AppState extends State<App> {
 
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
-  Widget _currentWidget = Registration3Screen();//Registration1Screen();
+  late Widget _currentWidget;//Registration1Screen();
   //WelcomeScreen();//TitleScreen();//Container();
+
+
+  @override
+  void initState() {
+    super.initState();
+    Widget titleScreen = TitleScreen(callback: refresh);
+    _currentWidget = titleScreen;
+  }
+
+  void refresh(Widget widget) {
+    setState(() {
+      _currentWidget = widget;
+    });
+  }
 
   void _loadScreen() {
     switch(_currentIndex) {
@@ -64,6 +77,8 @@ class AppState extends State<App> {
       case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
     }
   }
+
+  
  
   @override
   Widget build(BuildContext context) {
@@ -71,23 +86,7 @@ class AppState extends State<App> {
     return MaterialApp (
       home: Scaffold(
         backgroundColor: Color.fromARGB(255, 182, 224, 207).withOpacity(1),
-        // Color.fromARGB(255, 182, 224, 207).withOpacity(.94),///Color.fromARGB(255, 204, 214, 186).withOpacity(.94),
-        // appBar: AppBar(
-        //   title: const Text(
-        //     "PostURight",
-        //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        //   ),
-        //   centerTitle: true,
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        // ),
-        body: _buildBody(),
-        
-        // bottomNavigationBar: BottomNavigation (
-        //   currentTab: _currentTab, 
-        //   onSelectTab: _selectTab,
-        // ),
-
+        body: _currentWidget,
 
         bottomNavigationBar: BottomNavigationBar(
           // fixedColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
@@ -116,15 +115,13 @@ class AppState extends State<App> {
             _loadScreen();
           },
         ),
-
-
       )
     );
   }
 
   // return a widget representing a page
-  Widget _buildBody() {
-    return _currentWidget;
-  }
+  // Widget _buildBody() {
+  //   return currentWidget;
+  // }
 
 }

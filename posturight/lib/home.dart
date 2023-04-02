@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:posturight/login.dart';
 import 'calendar.dart';
 import 'package:calender_picker/calender_picker.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
@@ -7,7 +8,7 @@ import 'colors.dart';
 import 'main.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({required this.title, Key? key}) : super(key: key);
+  const HomePage({required this.title, Key? key, Function? refresh}) : super(key: key);
   final String? title;
   
   @override
@@ -57,13 +58,6 @@ class _HomePageState extends State<HomePage> {
               child: Text("Test set db"),
             ),
 
-            ElevatedButton (
-              onPressed: () {
-                profileRef.set({'firstname': 'Jane', 'lastname': 'Doe'});
-              },
-              child: Text("Logout"),
-            ),
-
 
             Container(
               height: 200,
@@ -99,7 +93,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                 ),
               ]
-            )
+            ),
+
+            ElevatedButton(
+              onPressed: (){
+                // Navigator.push(context,
+                //   MaterialPageRoute(builder: (context) => LoginScreen()));
+                
+              }, 
+              child: Text("Logout"),
+            ),
           ],
       )
       ],
