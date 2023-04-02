@@ -4,6 +4,7 @@ import 'colors.dart';
 import 'style.dart';
 import 'text_field.dart';
 import 'home.dart';
+import 'app_root.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -50,11 +51,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       ElevatedButton(
                         onPressed: (){
-                          // Navigator.push(context,
-                          //   MaterialPageRoute(builder: (context) => HomePage(title: 'Home')));
-                          // setState(() => currentWidget = HomePage(title: 'Home'));
+                          Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute(builder: (context) => AppRoot()),
+                            (Route<dynamic> route) => false,
+                          );
                         }, 
-                        child: Text("Log in")
+                        child: Text("Log in"),
                       )
                     ],
                   )

@@ -7,8 +7,8 @@ import 'style.dart';
 
 class TitleScreen extends StatelessWidget {
 
-  Function(Widget) callback;
-  TitleScreen({super.key, required this.callback});
+  // Function(Widget) callback;
+  // TitleScreen({super.key, required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +96,9 @@ class TitleScreen extends StatelessWidget {
                                             textAlign: TextAlign.left)),
                                             ElevatedButton(
                                               onPressed: (){
-                                                // Navigator.push(context,
-                                                //   MaterialPageRoute(builder: (context) => LoginScreen()));
-                                                callback(LoginScreen());
+                                                Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) => LoginScreen()));
+                                                // callback(LoginScreen());
                                               }, 
                                               child: Text("Login"),
                                             )
@@ -107,9 +107,5 @@ class TitleScreen extends StatelessWidget {
                               )
                             )
                     ]))));
-  }
-
-  onTapGetstarted(BuildContext context) {
-    // Navigator.pushNamed(context, AppRoutes.iphone14ThreeScreen);
   }
 }

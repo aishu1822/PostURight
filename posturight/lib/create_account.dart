@@ -3,6 +3,7 @@ import 'package:posturight/login.dart';
 import 'home.dart';
 import 'text_field.dart';
 import 'colors.dart';
+import 'app_root.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({Key? key}) : super(key: key);
@@ -54,8 +55,10 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
                 ElevatedButton(
                   onPressed: (){
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage(title: 'Home')));
+                    Navigator.pushAndRemoveUntil(context,
+                            MaterialPageRoute(builder: (context) => AppRoot()),
+                            (Route<dynamic> route) => false,
+                          );
                   }, 
                   child: Text("Create Account")
                 )
