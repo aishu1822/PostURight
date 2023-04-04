@@ -4,6 +4,7 @@ import 'home.dart';
 import 'text_field.dart';
 import 'colors.dart';
 import 'app_root.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({Key? key}) : super(key: key);
@@ -55,10 +56,23 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
                 ElevatedButton(
                   onPressed: (){
-                    Navigator.pushAndRemoveUntil(context,
-                            MaterialPageRoute(builder: (context) => AppRoot()),
-                            (Route<dynamic> route) => false,
-                          );
+
+                    FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(email: _emailTextController.text,
+                                                    password: _passwordTextController.text).then((value) {
+                                                      print("Created new account");
+                                                      Navigator.pushAndRemoveUntil(context,
+                                                        MaterialPageRoute(builder: (context) => AppRoot()),
+                                                        (Route<dynamic> route) => false,
+                                                      );
+                                                    }).onError((error, stackTrace) {
+                                                      print("Error: ${error.toString()}");
+                                                  });
+
+                    // Navigator.pushAndRemoveUntil(context,
+                    //         MaterialPageRoute(builder: (context) => AppRoot()),
+                    //         (Route<dynamic> route) => false,
+                    //       );
                   }, 
                   child: Text("Create Account")
                 )

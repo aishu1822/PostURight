@@ -5,6 +5,7 @@ import 'style.dart';
 import 'text_field.dart';
 import 'home.dart';
 import 'app_root.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,10 +52,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       ElevatedButton(
                         onPressed: (){
-                          Navigator.pushAndRemoveUntil(context,
-                            MaterialPageRoute(builder: (context) => AppRoot()),
-                            (Route<dynamic> route) => false,
-                          );
+                          FirebaseAuth.instance
+                          .signInWithEmailAndPassword(email: _emailTextController.text, 
+                                                      password: _passwordTextController.text).then((value) {
+                                                        Navigator.pushAndRemoveUntil(context,
+                                                          MaterialPageRoute(builder: (context) => AppRoot()),
+                                                          (Route<dynamic> route) => false,
+                                                        );
+                                                      }).onError((error, stackTrace) {
+                                                        // TODO: tell user the error
+                                                        print("Error: ${error.toString()}");
+                                                      });
+                          // Navigator.pushAndRemoveUntil(context,
+                          //   MaterialPageRoute(builder: (context) => AppRoot()),
+                          //   (Route<dynamic> route) => false,
+                          // );
                         }, 
                         child: Text("Log in"),
                       )

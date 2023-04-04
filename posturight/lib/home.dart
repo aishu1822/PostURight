@@ -7,6 +7,7 @@ import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'colors.dart';
 import 'main.dart';
 import 'title.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.title, Key? key, Function? refresh}) : super(key: key);
@@ -100,10 +101,17 @@ class _HomePageState extends State<HomePage> {
               onPressed: (){
                 // Navigator.push(context,
                 //   MaterialPageRoute(builder: (context) => LoginScreen()));
-                Navigator.pushAndRemoveUntil(context,
+                FirebaseAuth.instance.signOut().then((value) {
+                  print("Signed out");
+                  Navigator.pushAndRemoveUntil(context,
                             MaterialPageRoute(builder: (context) => TitleScreen()),
                             (Route<dynamic> route) => false,
                           );
+                });
+                // Navigator.pushAndRemoveUntil(context,
+                //             MaterialPageRoute(builder: (context) => TitleScreen()),
+                //             (Route<dynamic> route) => false,
+                //           );
               }, 
               child: Text("Logout"),
             ),
