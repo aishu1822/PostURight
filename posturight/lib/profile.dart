@@ -83,15 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     debugPrint('Card tapped.');
                   },
                   child: 
-                  // const SizedBox(
-                  //   width: 300,
-                  //   height: 100,
-                  //   child: Text("Friend Leaderboard",
-                  //               overflow: TextOverflow.ellipsis,
-                  //               textAlign: TextAlign.left,
-                  //               /*style: AppStyle.txtSFProRegular12*/),
-                  // ),
-                  Column(
+                    Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -103,12 +95,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                     padding:const EdgeInsets.only(top: 14,),
                                     child: Row(children: [
-                                      // CustomImageView(
-                                      //     imagePath: ImageConstant.imgEllipse8,
-                                      //     height: getVerticalSize(37),
-                                      //     width: getHorizontalSize(36),
-                                      //     radius: BorderRadius.circular(
-                                      //         getHorizontalSize(18))),
+                                      ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: const Size.fromRadius(23), // Image radius
+                                          child: Image.asset(
+                                                          'assets/Frame4.png',
+                                                        ),
+                                        ),
+                                      ),
                                       Padding(
                                           padding: const EdgeInsets.only(top: 8, left: 13,),
                                           child:Text("John",
@@ -119,11 +113,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                     padding: const EdgeInsets.only(top: 23,),
                                     child: Row(children: [
-                                      // CustomImageView(
-                                      //     imagePath: ImageConstant.imgEllipse9,
-                                      //     height: getSize(36),
-                                      //     width: getSize(36),
-                                      //     radius: BorderRadius.circular(getHorizontalSize(18))),
+                                      ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: const Size.fromRadius(23), // Image radius
+                                          child: Image.asset(
+                                                          'assets/Frame4.png',
+                                                        ),
+                                        ),
+                                      ),
                                       Padding(
                                           padding: const EdgeInsets.only(top: 8, left: 13,),
                                           child: Text("Jane",
@@ -134,12 +131,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Padding(
                                     padding: const EdgeInsets.only(top: 21, bottom:10),
                                     child: Row(children: [
-                                      // CustomImageView(
-                                      //     imagePath: ImageConstant.imgEllipse11,
-                                      //     height: getSize(36),
-                                      //     width: getSize(36),
-                                      //     radius: BorderRadius.circular(
-                                      //         getHorizontalSize(18))),
+                                      ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: const Size.fromRadius(23), // Image radius
+                                          child: Image.asset(
+                                                          'assets/Frame4.png',
+                                                        ),
+                                        ),
+                                      ),
                                       Padding(
                                           padding: const EdgeInsets.only(top: 8, left: 13,),
                                           child: Text("Jane",

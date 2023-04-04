@@ -55,117 +55,31 @@ class _Registration1ScreenState extends State<Registration1Screen> {
                           textInputAction: TextInputAction.done),
                       Padding(
                           padding: const EdgeInsets.only(top: 38),
-                          child: Text("What is your birth date?",
+                          child: Text("I want to maintain proper posture for",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               // style: AppStyle.txtRobotoRegular16
                             )
                           ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.white, side: const BorderSide(
-                              width: 1, // the thickness
-                              color: Colors.black // the color of the border
-                          )),
-                          onPressed: (){}, 
-                          child: 
-                            DropdownButton<String>(
-                              value: selectedValue,
-                              onChanged: (value) => selectedValue,
-                              items: items
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) => DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
-                              icon: Icon(Icons.arrow_drop_down),
-                              iconSize: 42,
-                              underline: SizedBox(),   
-                            ),
-                        ),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 38),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text("Height",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
-                                      // style: AppStyle.txtRobotoRegular16
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(primary: Colors.white, side: const BorderSide(
-                                        width: 1, // the thickness
-                                        color: Colors.black // the color of the border
-            )),
-                                      onPressed: (){}, 
-                                      child: 
-                                        DropdownButton<String>(
-                                          value: selectedValue,
-                                          onChanged: (value) => selectedValue,
-                                          items: items
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) => DropdownMenuItem<String>(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        ))
-                                                .toList(),
-                                          icon: Icon(Icons.arrow_drop_down),
-                                          iconSize: 42,
-                                          underline: SizedBox(),   
-                                        ),
-                                    ),
-                                  ]
-                                ),
-                                Column(
-                                    children: [
-                                    Text("Weight",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
-                                      // style: AppStyle.txtRobotoRegular16
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(primary: Colors.white,
-                                      side: const BorderSide(
-                                        width: 1, // the thickness
-                                        color: Colors.black // the color of the border
-            )),
-                                      onPressed: (){}, 
-                                      child: 
-                                        DropdownButton<String>(
-                                          value: selectedValue,
-                                          onChanged: (value) => selectedValue,
-                                          items: items
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) => DropdownMenuItem<String>(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        ))
-                                                .toList(),
-                                          icon: Icon(Icons.arrow_drop_down),
-                                          iconSize: 42,
-                                          underline: SizedBox(),   
-                                        ),
-                                    ),
-                                  ],
-                                ),
-                                
-                              ])),
+                        
 
-                            Column(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                              
-                              OutlinedButton(
-                                onPressed: (){}, 
-                                child: Text("Next")),
-                              OutlinedButton(
-                                onPressed: (){}, 
-                                child: Text("Skip")),
-                            ],)
+                              children:[Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                
+                                
+
+
+                                OutlinedButton(
+                                  onPressed: (){}, 
+                                  child: Text("Next")),
+                                OutlinedButton(
+                                  onPressed: (){}, 
+                                  child: Text("Skip")),
+                            ],)]),
                       
                     ]))));
   }
