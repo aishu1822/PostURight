@@ -9,6 +9,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';
 
 Timer? postureNotifTimer;
+String currentPosture = "nothing yet";
 
 class AppRoot extends StatefulWidget {
   AppRoot({Key? key}) : super(key: key);
@@ -26,7 +27,6 @@ class AppRootState extends State<AppRoot> {
   //WelcomeScreen();//TitleScreen();//Container();
 
   List<int> accXchar=[], accYchar=[], accZchar=[], gyrXchar=[], gyrYchar=[], gyrZchar=[];
-  String _current_posture = "nothing yet";
   List<BluetoothService> _services = <BluetoothService>[];
   final FlutterBlue flutterBlue = FlutterBlue.instance;
   List<BluetoothDevice> devicesList = <BluetoothDevice>[];
@@ -101,14 +101,10 @@ class AppRootState extends State<AppRoot> {
     print("Gyroscope: gyrX = $gyrX, gyrY = $gyrY, gyrZ = $gyrZ");
 
     if (accZ > 0.3) {
-      setState(() {
-        _current_posture = "slouching!";
-      });
+      currentPosture = "slouching!";
     } else {
-      if (_current_posture == "slouching!" || _current_posture == "nothing yet") {
-        setState(() {
-        _current_posture = "straight!";
-      });
+      if (currentPosture == "slouching!" || currentPosture == "nothing yet") {
+        currentPosture = "straight!";
       }
     }    
   }
@@ -240,7 +236,7 @@ class AppRootState extends State<AppRoot> {
                  style: TextStyle(color: Colors.white),
                ),
                onPressed: () async {
-                List<BluetoothService> new_services;
+                List<BluetoothService> newServices;
                 List<BluetoothCharacteristic> bclist;
                 flutterBlue.stopScan();
                   try {
@@ -251,9 +247,9 @@ class AppRootState extends State<AppRoot> {
                     // }
                     print(e);
                   } finally {
-                    new_services = await device.discoverServices();
+                    newServices = await device.discoverServices();
                     // TODO: remove idx hard coding
-                    bclist = new_services[2].characteristics; 
+                    bclist = newServices[2].characteristics; 
                     for (BluetoothCharacteristic c in bclist) {
                       c.value.listen((value) {
                         widget.readValues[c.uuid] = value;
@@ -261,7 +257,7 @@ class AppRootState extends State<AppRoot> {
                       await c.setNotifyValue(true);
                     }
                     setState(() {
-                      _services = new_services;
+                      _services = newServices;
                       _connectedDevice = device; 
                     });
 
@@ -330,7 +326,7 @@ class AppRootState extends State<AppRoot> {
    }
    return Scaffold(
        appBar: AppBar(
-         title: Text("Posture status: " + _current_posture),//Text(widget.title),
+         title: Text("Detecting bluetooth devices"),//Text(widget.title),
        ),
        body:_buildListViewOfDevices(),
       );

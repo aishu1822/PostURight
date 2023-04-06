@@ -31,12 +31,27 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final profileRef = database.child("/profile");
   double buttonDayHeightWidth = 40;
+  String _displayPostureStatus = "nothing yet";
+  late Timer updatePostureStatusTimer;
   var _selectedValue = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    updatePostureStatusTimer = Timer.periodic(const Duration(seconds:1),(arg) {
+      if (_displayPostureStatus != currentPosture) {
+        setState(() {
+          _displayPostureStatus = currentPosture;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    updatePostureStatusTimer.cancel();
   }
 
   Widget homeWidget() {
@@ -76,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               width: 300,
               child: Card(
                   child: 
-                    Text("Posture status: " /*+ _current_posture*/),
+                    Text("Posture status: " + _displayPostureStatus),
                 ),
             ),
             Wrap(
