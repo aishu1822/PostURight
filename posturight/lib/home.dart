@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:posturight/login.dart';
-import 'calendar.dart';
 import 'package:calender_picker/calender_picker.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'colors.dart';
@@ -9,16 +6,9 @@ import 'main.dart';
 import 'title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'package:flutter_blue/flutter_blue.dart';
-import 'dart:typed_data';
 import 'app_root.dart';
-
-final Guid accX_uuid = new Guid("00002101-0000-1000-8000-00805f9b34fb");
-final Guid accY_uuid = new Guid("00002102-0000-1000-8000-00805f9b34fb");
-final Guid accZ_uuid = new Guid("00002103-0000-1000-8000-00805f9b34fb");
-final Guid gyrX_uuid = new Guid("00002104-0000-1000-8000-00805f9b34fb");
-final Guid gyrY_uuid = new Guid("00002105-0000-1000-8000-00805f9b34fb");
-final Guid gyrZ_uuid = new Guid("00002106-0000-1000-8000-00805f9b34fb");
+import 'dart:core';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({required this.title, Key? key, Function? refresh}) : super(key: key);
@@ -34,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   String _displayPostureStatus = "nothing yet";
   late Timer updatePostureStatusTimer;
   var _selectedValue = DateTime.now();
+  double _angle = 0.0;
 
   @override
   void initState() {
@@ -45,6 +36,15 @@ class _HomePageState extends State<HomePage> {
           _displayPostureStatus = currentPosture;
         });
       }
+      if (readValues.containsKey(angle_uuid)) {
+        double new_angle = interpretValue(readValues[angle_uuid]!) - 90.0;
+        if ((new_angle - _angle).abs() > 5) {
+          setState(() {
+            _angle = new_angle;
+          });
+        }
+      }
+
     });
   }
 
@@ -87,11 +87,54 @@ class _HomePageState extends State<HomePage> {
 
 
             Container(
-              height: 200,
-              width: 300,
+              // height: 200,
+              // width: 300,
               child: Card(
                   child: 
+                  Column(children: [
                     Text("Posture status: " + _displayPostureStatus),
+                    // angleSlider(getDisplayAngle()),
+                    SfRadialGauge(
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                            minimum: -45,
+                            maximum: 45,
+                            canScaleToFit: false,
+                            showLabels: true,
+                            showTicks: true,
+                            radiusFactor: 0.6,
+                            showFirstLabel: true,
+                            showLastLabel: true,
+                            startAngle: 190,
+                            endAngle: 350,
+                            axisLineStyle: const AxisLineStyle(
+                                cornerStyle: CornerStyle.bothFlat,
+                                thickness: 25,
+                                gradient: SweepGradient(
+                                      colors: <Color>[
+                                        Color.fromARGB(255, 239, 70, 8),
+                                        Color.fromARGB(255, 204, 153, 43),
+                                        Color.fromARGB(255, 104, 217, 92),
+                                        Color.fromARGB(255, 204, 153, 43),
+                                        Color.fromARGB(255, 239, 70, 8),
+                                      ],
+                                      stops: <double>[0.0, 0.25, 0.5, 0.75, 1.0],
+                                  )),
+                            pointers: <GaugePointer>[
+                              MarkerPointer(
+                                  value: _angle,
+                                  enableDragging: true,
+                                  enableAnimation: true,
+                                  markerHeight: 15,
+                                  markerWidth: 45,
+                                  markerType: MarkerType.rectangle,
+                                  color: Colors.white,
+                                  elevation: 3,),
+                            ],
+                        )
+                      ]
+                    ),
+                  ],)
                 ),
             ),
             Wrap(

@@ -8,13 +8,32 @@ import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';
 
+final Guid accX_uuid = Guid("00002101-0000-1000-8000-00805f9b34fb");
+final Guid accY_uuid = Guid("00002102-0000-1000-8000-00805f9b34fb");
+final Guid accZ_uuid = Guid("00002103-0000-1000-8000-00805f9b34fb");
+final Guid gyrX_uuid = Guid("00002104-0000-1000-8000-00805f9b34fb");
+final Guid gyrY_uuid = Guid("00002105-0000-1000-8000-00805f9b34fb");
+final Guid gyrZ_uuid = Guid("00002106-0000-1000-8000-00805f9b34fb");
+final Guid angle_uuid = Guid("00002107-0000-1000-8000-00805f9b34fb");
+
 Timer? postureNotifTimer;
 String currentPosture = "nothing yet";
+
+final Map<Guid, List<int>> readValues = Map<Guid, List<int>>();
+
+double interpretValue(List<int> data) {
+  if (data.length < 4) return 0.0;
+  final bytes = Uint8List.fromList(data);
+  final byteData = ByteData.sublistView(bytes);
+  double value = byteData.getFloat32(0,Endian.little);
+  // print(value); 
+  return value;
+}
 
 class AppRoot extends StatefulWidget {
   AppRoot({Key? key}) : super(key: key);
   
-  final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
+  // final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
   @override
   State<AppRoot> createState() => AppRootState();
 }
@@ -58,6 +77,12 @@ class AppRootState extends State<AppRoot> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    postureNotifTimer!.cancel();
+  }
+
   void refresh(Widget widget) {
     setState(() {
       _currentWidget = widget;
@@ -72,41 +97,40 @@ class AppRootState extends State<AppRoot> {
       case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
     }
   }  
-
-  double interpretValue(List<int> data) {
-    if (data.length < 4) return 0;
-    final bytes = Uint8List.fromList(data);
-    final byteData = ByteData.sublistView(bytes);
-    double value = byteData.getFloat32(0,Endian.little);
-    print(value); 
-    return value;
-  }
-
+  
   void checkPosture() {
     if (_connectedDevice == null) return;
 
     // BluetoothService serv = _services[2]; // assuming 3 services and IMU service is the third one
     // assert(serv.uuid.toString().split('-')[0] == '00001101');
     
-    print("timer thread");
+    // print("timer thread");
     
-    double accX = interpretValue(widget.readValues[accX_uuid]!);
-    double accY = interpretValue(widget.readValues[accY_uuid]!);
-    double accZ = interpretValue(widget.readValues[accZ_uuid]!);
-    double gyrX = interpretValue(widget.readValues[gyrX_uuid]!);
-    double gyrY = interpretValue(widget.readValues[gyrX_uuid]!);
-    double gyrZ = interpretValue(widget.readValues[gyrX_uuid]!);
+    double accX = interpretValue(readValues[accX_uuid]!);
+    double accY = interpretValue(readValues[accY_uuid]!);
+    double accZ = interpretValue(readValues[accZ_uuid]!);
+    double gyrX = interpretValue(readValues[gyrX_uuid]!);
+    double gyrY = interpretValue(readValues[gyrX_uuid]!);
+    double gyrZ = interpretValue(readValues[gyrX_uuid]!);
+    double angle = interpretValue(readValues[angle_uuid]!);
 
-    print("Accelerometer: accX = $accX, accY = $accY, accZ = $accZ");
-    print("Gyroscope: gyrX = $gyrX, gyrY = $gyrY, gyrZ = $gyrZ");
+    // print("Accelerometer: accX = $accX, accY = $accY, accZ = $accZ");
+    // print("Gyroscope: gyrX = $gyrX, gyrY = $gyrY, gyrZ = $gyrZ");
+    print("Angle: $angle");
 
-    if (accZ > 0.3) {
-      currentPosture = "slouching!";
+    // if (accZ > 0.3) {
+    //   currentPosture = "slouching!";
+    // } else {
+    //   if (currentPosture == "slouching!" || currentPosture == "nothing yet") {
+    //     currentPosture = "straight!";
+    //   }
+    // }    
+
+    if (angle <= 75.0 || angle >= 105.0) {
+      currentPosture = "slouching";
     } else {
-      if (currentPosture == "slouching!" || currentPosture == "nothing yet") {
-        currentPosture = "straight!";
-      }
-    }    
+      currentPosture = "straight";
+    }
   }
 
   _addDeviceTolist(final BluetoothDevice device) {
@@ -132,7 +156,7 @@ class AppRootState extends State<AppRoot> {
              onPressed: () async {
                var sub = characteristic.value.listen((value) {
                  setState(() {
-                   widget.readValues[characteristic.uuid] = value;
+                   readValues[characteristic.uuid] = value;
                  });
                });
                await characteristic.read();
@@ -155,7 +179,7 @@ class AppRootState extends State<AppRoot> {
              child: Text('NOTIFY', style: TextStyle(color: Colors.white)),
              onPressed: () async {
               characteristic.value.listen((value) {
-                widget.readValues[characteristic.uuid] = value;
+                readValues[characteristic.uuid] = value;
               });
               await characteristic.setNotifyValue(true);
              },
@@ -252,7 +276,7 @@ class AppRootState extends State<AppRoot> {
                     bclist = newServices[2].characteristics; 
                     for (BluetoothCharacteristic c in bclist) {
                       c.value.listen((value) {
-                        widget.readValues[c.uuid] = value;
+                        readValues[c.uuid] = value;
                       });                      
                       await c.setNotifyValue(true);
                     }
@@ -326,7 +350,7 @@ class AppRootState extends State<AppRoot> {
    }
    return Scaffold(
        appBar: AppBar(
-         title: Text("Detecting bluetooth devices"),//Text(widget.title),
+         title: Text("Detecting bluetooth devices"),
        ),
        body:_buildListViewOfDevices(),
       );
