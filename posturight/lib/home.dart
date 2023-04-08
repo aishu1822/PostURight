@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> updateDisplayUserBestDuration() async {
-    int best_duration = await getUserBestDuration("username");
+    int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
     setState(() {
       _best_duration_today = (best_duration / 60).toInt();
     });

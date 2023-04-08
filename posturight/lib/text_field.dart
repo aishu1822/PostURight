@@ -20,5 +20,5 @@ TextField loginTextField(String text, bool isPasswordType, TextEditingController
                     ),
                   ),
                   keyboardType: isPasswordType ? TextInputType.visiblePassword : TextInputType.emailAddress,
-                );
+                );                
 }

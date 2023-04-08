@@ -66,10 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         // TODO: tell user the error
                                                         print("Error: ${error.toString()}");
                                                       });
-                          // Navigator.pushAndRemoveUntil(context,
-                          //   MaterialPageRoute(builder: (context) => AppRoot()),
-                          //   (Route<dynamic> route) => false,
-                          // );
                         }, 
                         child: Text("Log in"),
                       )

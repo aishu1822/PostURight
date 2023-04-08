@@ -135,7 +135,7 @@ class AppRootState extends State<AppRoot> {
         DateTime endTime = DateTime.now();
         int new_duration = (endTime.difference(startTime)).inSeconds;
         // username should be FirebaseAuth.instance.currentUser.uid
-        bool updated = await updateUserBestDuration("username", new_duration);
+        bool updated = await updateUserBestDuration(FirebaseAuth.instance.currentUser!.uid, new_duration);
         if (!updated) {
           print("failed to update best duration");
         }
