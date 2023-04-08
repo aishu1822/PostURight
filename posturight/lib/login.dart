@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'colors.dart';
@@ -6,6 +8,7 @@ import 'text_field.dart';
 import 'home.dart';
 import 'app_root.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_model.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

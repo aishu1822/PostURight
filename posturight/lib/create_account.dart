@@ -5,6 +5,7 @@ import 'text_field.dart';
 import 'colors.dart';
 import 'app_root.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_model.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                                     }).onError((error, stackTrace) {
                                                       print("Error: ${error.toString()}");
                                                   });
-
+                    createUser("Jane", "Doe", "username", _emailTextController.text, 0);
                     // Navigator.pushAndRemoveUntil(context,
                     //         MaterialPageRoute(builder: (context) => AppRoot()),
                     //         (Route<dynamic> route) => false,

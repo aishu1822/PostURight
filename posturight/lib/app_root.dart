@@ -1,4 +1,6 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:posturight/profile_model.dart';
 import 'title.dart';
 import 'alert_settings.dart';
 import 'exercises.dart';
@@ -7,6 +9,7 @@ import 'home.dart';
 import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final Guid accX_uuid = Guid("00002101-0000-1000-8000-00805f9b34fb");
 final Guid accY_uuid = Guid("00002102-0000-1000-8000-00805f9b34fb");
@@ -51,6 +54,7 @@ class AppRootState extends State<AppRoot> {
   List<BluetoothDevice> devicesList = <BluetoothDevice>[];
   BluetoothDevice? _connectedDevice = null;
 
+  DateTime startTime = DateTime.now();
 
   @override
   void initState() {
@@ -98,7 +102,7 @@ class AppRootState extends State<AppRoot> {
     }
   }  
   
-  void checkPosture() {
+  Future<void> checkPosture() async {
     if (_connectedDevice == null) return;
 
     // BluetoothService serv = _services[2]; // assuming 3 services and IMU service is the third one
@@ -127,8 +131,21 @@ class AppRootState extends State<AppRoot> {
     // }    
 
     if (angle <= 75.0 || angle >= 105.0) {
+      if (startTime != null && currentPosture == "straight") {
+        DateTime endTime = DateTime.now();
+        int new_duration = (endTime.difference(startTime)).inSeconds;
+        // username should be FirebaseAuth.instance.currentUser.uid
+        bool updated = await updateUserBestDuration("username", new_duration);
+        if (!updated) {
+          print("failed to update best duration");
+        }
+        print("new_duration: $new_duration");
+      }
       currentPosture = "slouching";
     } else {
+      if (startTime == null || currentPosture != "straight") {
+        startTime = DateTime.now();
+      }
       currentPosture = "straight";
     }
   }

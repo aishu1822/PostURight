@@ -21,6 +21,7 @@ Widget registrationButton(String text, BuildContext context, String nextPage) {
                                  fontSize: 16),),
     
     style: ElevatedButton.styleFrom(
+      shadowColor:Color.fromARGB(255, 9, 57, 54),
       minimumSize: Size(MediaQuery.of(context).size.width-10, 55),
       primary: Color.fromARGB(255, 23, 114, 109),
       side: BorderSide(color: Color.fromARGB(255, 23, 114, 109),),
