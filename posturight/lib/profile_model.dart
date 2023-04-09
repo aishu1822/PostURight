@@ -1,6 +1,6 @@
 import 'dart:ffi';
-
 import 'package:firebase_database/firebase_database.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
 void createUser(String uid, String username, String email, int postureDurationGoal) {
   final userData = {
@@ -42,7 +42,6 @@ Future<int> getUserPostureDurationGoal(String uid) async {
 
 Future<int> getUserBestDuration(String uid) async {
   final db_ref = FirebaseDatabase.instance.ref();
-  final profileRef = db_ref.child("/profiles/$uid");
   final date = DateTime.now().toIso8601String().substring(0,10);
   final data = await db_ref.child('profiles/$uid/best_duration_held/$date').get();
   if (data.exists) {
@@ -73,10 +72,9 @@ Future<bool> updateUserBestDuration(String uid, int new_duration) async {
 void loadFakeDailyData() {
 
   final db_ref = FirebaseDatabase.instance.ref();
-  final profileRef = db_ref.child("/profiles");
+  final profileRef = db_ref.child("/profiles/fake_uid");
 
   final data = {
-    'fake_uid' : {
       'username' : 'fake',
       'email' : 'fake',
       'duration_goal' : 0,
@@ -94,10 +92,22 @@ void loadFakeDailyData() {
         '2023-04-07' : 230,
         '2023-04-08' : 290,
       },
-    }
   };
 
   profileRef.set(data).catchError((error) {
     print("failed to save fake daily data, Error: ${error.toString()}");
   });
+}
+
+Future<Map> getUserChartData(String uid) async {
+  final db_ref = FirebaseDatabase.instance.ref();
+  final data = await db_ref.child('profiles/fake_uid/daily_total_duration').get();
+  
+  if (data.exists) {
+    print("getting chart data");
+    print(data.value);
+    return data.value as Map;
+  }     
+  print("getUserChartData error");
+  return {}; 
 }

@@ -59,7 +59,7 @@ class AppRootState extends State<AppRoot> {
   @override
   void initState() {
     super.initState();
-    loadFakeDailyData();
+    
     flutterBlue.setLogLevel(LogLevel.info);
     Widget titleScreen = HomePage(title: 'Home');//TitleScreen(callback: refresh);
     _currentWidget = titleScreen;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:calender_picker/calender_picker.dart';
 import 'package:posturight/profile_model.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'colors.dart';
 import 'main.dart';
 import 'title.dart';
@@ -18,7 +19,7 @@ class _ChartData {
   _ChartData(this.x, this.y);
  
   final String x;
-  final double y;
+  final int y;
 }
 
 class HomePage extends StatefulWidget {
@@ -41,12 +42,16 @@ class _HomePageState extends State<HomePage> {
   bool _showGoodPostureImage = false;
   int _posture_goal_hours = 0;
   int _posture_goal_mins = 0;
+  Map data_map = {};
 
   @override
   void initState() {
     super.initState();
     setPostureGoalDisplay();
-
+    
+    loadFakeDailyData();
+    populateChartData();
+    
     updateUserBestDurationTimer = Timer.periodic(const Duration(minutes: 1), (timer) { 
       print("=============================================================================> updating best duration");
       updateDisplayUserBestDuration();
@@ -102,26 +107,39 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void populateChartData() async {
+    Map loaded_data_map = await getUserChartData(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {
+      data_map = loaded_data_map;
+    });
+  }
+
   Widget chartWidget() {
-    List<_ChartData> data = [
-      _ChartData('CHN', 12),
-      _ChartData('GER', 15),
-      _ChartData('RUS', 30),
-      _ChartData('BRZ', 6.4),
-      _ChartData('IND', 14)
-    ];
+    List<_ChartData> data = [];
+    // print("data_map is here");
+    // print(data_map);
+    data_map.keys.forEach((element) {
+      // print("element");
+      // print(element.runtimeType);
+
+      // print(data_map[element].runtimeType);
+      data.add(_ChartData(element.substring(5,10), data_map[element]));
+    });
+    // print("data is here");
+    // print(data);
+
     charts.TooltipBehavior _tooltip = charts.TooltipBehavior(enable: true);
-    return charts.SfCartesianChart(
-            primaryXAxis: charts.CategoryAxis(),
-            primaryYAxis: charts.NumericAxis(minimum: 0, maximum: 40, interval: 10),
+    return charts.SfCartesianChart( 
+            primaryXAxis: charts.CategoryAxis(axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
+            primaryYAxis: charts.NumericAxis(minimum: 0, maximum: 500, interval: 50, axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
             tooltipBehavior: _tooltip,
+            plotAreaBorderWidth: 0,
             series: <charts.ChartSeries<_ChartData, String>>[
               charts.AreaSeries<_ChartData, String>(
                   dataSource: data,
                   xValueMapper: (_ChartData data, _) => data.x,
                   yValueMapper: (_ChartData data, _) => data.y,
-                  name: 'Gold',
-                  color: const Color.fromRGBO(8, 142, 255, 1),
+                  color: Color.fromARGB(255, 13, 144, 162),
               ),
             ],
           );           
