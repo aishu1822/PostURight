@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:calender_picker/calender_picker.dart';
 import 'package:posturight/profile_model.dart';
@@ -32,14 +34,24 @@ class _HomePageState extends State<HomePage> {
   double buttonDayHeightWidth = 40;
   String _displayPostureStatus = "nothing yet";
   late Timer updatePostureStatusTimer;
+  late Timer updateUserBestDurationTimer;
   var _selectedValue = DateTime.now();
   double _angle = 0.0;
   int _best_duration_today = 0;
   bool _showGoodPostureImage = false;
+  int _posture_goal_hours = 0;
+  int _posture_goal_mins = 0;
 
   @override
   void initState() {
     super.initState();
+    setPostureGoalDisplay();
+
+    updateUserBestDurationTimer = Timer.periodic(const Duration(minutes: 1), (timer) { 
+      print("=============================================================================> updating best duration");
+      updateDisplayUserBestDuration();
+    });
+    
     updatePostureStatusTimer = Timer.periodic(const Duration(seconds:1),(arg) {
 
       // TODO: do only a single set state
@@ -48,7 +60,6 @@ class _HomePageState extends State<HomePage> {
           _displayPostureStatus = currentPosture;
           if (currentPosture != "straight") {
             _showGoodPostureImage = false;
-            updateDisplayUserBestDuration();
           } else {
             _showGoodPostureImage = true;
           } 
@@ -70,10 +81,22 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     super.dispose();
     updatePostureStatusTimer.cancel();
+    updateUserBestDurationTimer.cancel();
+  }
+
+  Future<void> setPostureGoalDisplay() async {
+    int posture_goal_seconds = await getUserPostureDurationGoal(FirebaseAuth.instance.currentUser!.uid);
+    int total_mins = posture_goal_seconds ~/ 60;
+    print("total_mins = $total_mins");
+    setState(() {
+      _posture_goal_hours = total_mins ~/ 60;
+      _posture_goal_mins = total_mins % 60;
+    });
   }
 
   Future<void> updateDisplayUserBestDuration() async {
     int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
+    print("best_duratino = $best_duration");
     setState(() {
       _best_duration_today = (best_duration / 60).toInt();
     });
@@ -127,14 +150,6 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
-
-            // ElevatedButton (
-            //   onPressed: () {
-            //     profileRef.set({'firstname': 'Jane', 'lastname': 'Doe'});
-            //   },
-            //   child: Text("Test set db"),
-            // ),
-
 
             Container(
               // height: 200,
@@ -240,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                   child:Card(
                     elevation: 2,
                     child:Column(children:[
-                      const Text("Goal: 1hr. 30min.", textAlign: TextAlign.center,),
+                      Text("Goal: $_posture_goal_hours hr $_posture_goal_mins min", textAlign: TextAlign.center,),
                       const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
                       SizedBox(
                         height: 80.0,
@@ -256,11 +271,13 @@ class _HomePageState extends State<HomePage> {
                                   showLabels: false,
                                   startAngle: 0,
                                   endAngle: 0,
+                                  minimum: 0,
+                                  maximum: max(1, (_posture_goal_hours*60 + _posture_goal_mins)).toDouble(),
                                   ranges: [
                                     GaugeRange(startValue: 0, endValue: _best_duration_today.toDouble()),
                                   ],
                                   annotations: [
-                                    GaugeAnnotation(widget: Text("$_best_duration_today min."))
+                                    GaugeAnnotation(widget: Text("$_best_duration_today min"))
                                   ],
                                 ),
                               ],

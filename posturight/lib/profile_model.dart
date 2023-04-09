@@ -8,6 +8,7 @@ void createUser(String uid, String username, String email, int postureDurationGo
     'email' : email,
     'duration_goal' : postureDurationGoal,
     'best_duration_held' : 0,
+    'daily_total_duration' : 0,
   };
 
   final db_ref = FirebaseDatabase.instance.ref();
@@ -17,15 +18,26 @@ void createUser(String uid, String username, String email, int postureDurationGo
   });
 }
 
-Future<Map> getUserPostureDurationGoal(String uid) async {
+bool updateUserDurationGoal(String uid, int hours, int minutes) {
+  final db_ref = FirebaseDatabase.instance.ref();
+  final profileRef = db_ref.child("/profiles/$uid");
+  int goal = hours*3600 + minutes*60;
+  profileRef.update({'duration_goal' : goal.toString()}).catchError((error) {
+    print("failed to update user duration goal, Error: ${error.toString()}");
+    return false;
+  });
+  return true;
+}
+
+Future<int> getUserPostureDurationGoal(String uid) async {
   final db_ref = FirebaseDatabase.instance.ref();
   final userData = await db_ref.child('profiles/$uid/duration_goal').get();
   if (userData.exists) {
     print(userData.toString());
-  } else {
-    print("failed to retrieve data");
-  }
-  return {};
+    return int.parse(userData.value as String);
+  } 
+  print("failed to retrieve data");  
+  return -1;
 }
 
 Future<int> getUserBestDuration(String uid) async {
@@ -56,4 +68,36 @@ Future<bool> updateUserBestDuration(String uid, int new_duration) async {
     return false;
   });
   return true;
+}
+
+void loadFakeDailyData() {
+
+  final db_ref = FirebaseDatabase.instance.ref();
+  final profileRef = db_ref.child("/profiles");
+
+  final data = {
+    'fake_uid' : {
+      'username' : 'fake',
+      'email' : 'fake',
+      'duration_goal' : 0,
+      'best_duration_held' : {
+        '2023-04-05' : 200,
+        '2023-04-06' : 200,
+        '2023-04-07' : 200,
+        '2023-04-08' : 200,
+      },
+      'daily_total_duration' : {
+        '2023-04-03' : 200,
+        '2023-04-04' : 100,
+        '2023-04-05' : 300,
+        '2023-04-06' : 450,
+        '2023-04-07' : 230,
+        '2023-04-08' : 290,
+      },
+    }
+  };
+
+  profileRef.set(data).catchError((error) {
+    print("failed to save fake daily data, Error: ${error.toString()}");
+  });
 }

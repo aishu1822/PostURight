@@ -59,6 +59,8 @@ class AppRootState extends State<AppRoot> {
   @override
   void initState() {
     super.initState();
+    loadFakeDailyData();
+    flutterBlue.setLogLevel(LogLevel.info);
     Widget titleScreen = HomePage(title: 'Home');//TitleScreen(callback: refresh);
     _currentWidget = titleScreen;
 
@@ -122,16 +124,12 @@ class AppRootState extends State<AppRoot> {
     // print("Gyroscope: gyrX = $gyrX, gyrY = $gyrY, gyrZ = $gyrZ");
     print("Angle: $angle");
 
-    // if (accZ > 0.3) {
-    //   currentPosture = "slouching!";
-    // } else {
-    //   if (currentPosture == "slouching!" || currentPosture == "nothing yet") {
-    //     currentPosture = "straight!";
-    //   }
-    // }    
-
     if (angle <= 75.0 || angle >= 105.0) {
-      if (startTime != null && currentPosture == "straight") {
+      startTime = DateTime.now();
+      currentPosture = "slouching";
+
+    } else {
+      if (currentPosture == "straight") {
         DateTime endTime = DateTime.now();
         int new_duration = (endTime.difference(startTime)).inSeconds;
         // username should be FirebaseAuth.instance.currentUser.uid
@@ -140,11 +138,6 @@ class AppRootState extends State<AppRoot> {
           print("failed to update best duration");
         }
         print("new_duration: $new_duration");
-      }
-      currentPosture = "slouching";
-    } else {
-      if (startTime == null || currentPosture != "straight") {
-        startTime = DateTime.now();
       }
       currentPosture = "straight";
     }
