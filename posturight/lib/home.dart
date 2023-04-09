@@ -42,7 +42,9 @@ class _HomePageState extends State<HomePage> {
   bool _showGoodPostureImage = false;
   int _posture_goal_hours = 0;
   int _posture_goal_mins = 0;
-  Map data_map = {};
+  // Map data_map = {};
+  List<_ChartData> chart_data = [];
+  int last_three_days_total = 0;
 
   @override
   void initState() {
@@ -109,34 +111,52 @@ class _HomePageState extends State<HomePage> {
 
   void populateChartData() async {
     Map loaded_data_map = await getUserChartData(FirebaseAuth.instance.currentUser!.uid);
+    final keys_list = loaded_data_map.keys.toList();
+    final values_list = loaded_data_map.values.toList();
+    final last_week = keys_list.getRange(max(0, loaded_data_map.length-7), loaded_data_map.length);
+    final last_three_days = values_list.getRange(max(0, values_list.length-4), max(0, values_list.length-1));
+
+    int total = 0;
+    last_three_days.forEach((element) {
+      total += element as int;
+    });
+    // ratio /= (3*12*3600);
+    // print("ratio = $ratio");
+
+    List<_ChartData> new_state_list = [];
+    last_week.forEach((element) {
+      new_state_list.add(_ChartData(element.substring(5,10), loaded_data_map[element]~/3600));
+    });
+    
     setState(() {
-      data_map = loaded_data_map;
+      chart_data = new_state_list;
+      last_three_days_total = total;
     });
   }
 
   Widget chartWidget() {
-    List<_ChartData> data = [];
+    // List<_ChartData> data = [];
     // print("data_map is here");
     // print(data_map);
-    data_map.keys.forEach((element) {
+    // data_map.keys.forEach((element) {
       // print("element");
       // print(element.runtimeType);
 
       // print(data_map[element].runtimeType);
-      data.add(_ChartData(element.substring(5,10), data_map[element]));
-    });
-    // print("data is here");
-    // print(data);
+      // data.add(_ChartData(element.substring(5,10), data_map[element]));
+    // });
+    print("data is here");
+    print(chart_data);
 
     charts.TooltipBehavior _tooltip = charts.TooltipBehavior(enable: true);
     return charts.SfCartesianChart( 
             primaryXAxis: charts.CategoryAxis(axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
-            primaryYAxis: charts.NumericAxis(minimum: 0, maximum: 500, interval: 50, axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
+            primaryYAxis: charts.NumericAxis(minimum: 0, maximum: 12, interval: 1, axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
             tooltipBehavior: _tooltip,
             plotAreaBorderWidth: 0,
             series: <charts.ChartSeries<_ChartData, String>>[
               charts.AreaSeries<_ChartData, String>(
-                  dataSource: data,
+                  dataSource: chart_data,
                   xValueMapper: (_ChartData data, _) => data.x,
                   yValueMapper: (_ChartData data, _) => data.y,
                   color: Color.fromARGB(255, 13, 144, 162),
@@ -309,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                   child:Card(
                     elevation: 2,
                     child:Column(children:[
-                      const Text("Ratio of good to bad\nposture (last 3 days)", textAlign: TextAlign.center,),
+                      const Text("Ratio (last 3 days)", textAlign: TextAlign.center,),
                       const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
                       SizedBox(
                         height: 80.0,
@@ -325,6 +345,14 @@ class _HomePageState extends State<HomePage> {
                                 showLabels: false,
                                 startAngle: 0,
                                 endAngle: 0,
+                                minimum: 0,
+                                maximum: 36*3600,
+                                ranges: [
+                                  GaugeRange(startValue: 0, endValue: last_three_days_total.toDouble())
+                                ],
+                                annotations: [
+                                  GaugeAnnotation(widget: Text("${double.parse(((last_three_days_total/(36*3600)*100)).toStringAsFixed(2))}%"))
+                                ],
                               )
                             ],
                           ),
