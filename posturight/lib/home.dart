@@ -99,6 +99,9 @@ class _HomePageState extends State<HomePage> {
       _posture_goal_hours = total_mins ~/ 60;
       _posture_goal_mins = total_mins % 60;
     });
+
+    // call so it initializes once without waiting 1 minute
+    updateDisplayUserBestDuration();
   }
 
   Future<void> updateDisplayUserBestDuration() async {

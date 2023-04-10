@@ -1,4 +1,6 @@
 import 'dart:ffi';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:posturight/profile_model.dart';
 import 'title.dart';
@@ -10,6 +12,9 @@ import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:cron/cron.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 final Guid accX_uuid = Guid("00002101-0000-1000-8000-00805f9b34fb");
 final Guid accY_uuid = Guid("00002102-0000-1000-8000-00805f9b34fb");
@@ -21,8 +26,19 @@ final Guid angle_uuid = Guid("00002107-0000-1000-8000-00805f9b34fb");
 
 Timer? postureNotifTimer;
 String currentPosture = "nothing yet";
-
+int seconds_straight = 0;
 final Map<Guid, List<int>> readValues = Map<Guid, List<int>>();
+
+@pragma('vm:entry-point')
+void countDailyTotal(String arg) { 
+  Timer.periodic(Duration(seconds:1), (timer) {
+    double a = interpretValue(readValues[angle_uuid]!);
+    if (a <= 75.0 || a >= 105.0) {
+      return;
+    }
+    seconds_straight++;
+  });  
+}
 
 double interpretValue(List<int> data) {
   if (data.length < 4) return 0.0;
@@ -41,7 +57,7 @@ class AppRoot extends StatefulWidget {
   State<AppRoot> createState() => AppRootState();
 }
 
-class AppRootState extends State<AppRoot> {
+class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
 
   // int selectedBottomBarIndex = 0;
   int _currentIndex = 0;
@@ -53,13 +69,19 @@ class AppRootState extends State<AppRoot> {
   final FlutterBlue flutterBlue = FlutterBlue.instance;
   List<BluetoothDevice> devicesList = <BluetoothDevice>[];
   BluetoothDevice? _connectedDevice = null;
-
+  final cron = Cron();
   DateTime startTime = DateTime.now();
+  double _animateHeight = 80.0;
+  double _animateWidth = 80.0;
+  bool _resized = false;
 
   @override
   void initState() {
     super.initState();
     
+    compute(countDailyTotal, "arg");
+    scheduleUpdateDailyTotalDB();
+
     flutterBlue.setLogLevel(LogLevel.info);
     Widget titleScreen = HomePage(title: 'Home');//TitleScreen(callback: refresh);
     _currentWidget = titleScreen;
@@ -80,6 +102,21 @@ class AppRootState extends State<AppRoot> {
 
     postureNotifTimer = Timer.periodic(const Duration(seconds:1),(arg) {
       checkPosture();
+    });
+  }
+
+  void scheduleUpdateDailyTotalDB() async {
+    cron.schedule(Schedule.parse('59 23 * * *'), () async {
+      // print("This code runs at 11:59pm everyday");
+      String current_uid = FirebaseAuth.instance.currentUser!.uid;
+      String date = (DateTime.now().toIso8601String()).substring(5,10);
+      final db_ref = FirebaseDatabase.instance.ref().child("/profiles/$current_uid/daily_total_duration");
+      db_ref.set({
+        '$date' : '$seconds_straight'
+      });
+      seconds_straight = 0;
+      // reset ongoing time so it doesn't carry over from previous day
+      startTime = DateTime.now();
     });
   }
 
@@ -215,14 +252,14 @@ class AppRootState extends State<AppRoot> {
              children: <Widget>[
                Row(
                  children: <Widget>[
-                   Text(characteristic.uuid.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                   Text(characteristic.uuid.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
                  ],
                ),
-               Row(
-                 children: <Widget>[
-                   ..._buildReadWriteNotifyButton(characteristic),
-                 ],
-               ),
+              //  Row(
+              //    children: <Widget>[
+              //      ..._buildReadWriteNotifyButton(characteristic),
+              //    ],
+              //  ),
              ],
            ),
          ),
@@ -275,6 +312,7 @@ class AppRootState extends State<AppRoot> {
                 flutterBlue.stopScan();
                   try {
                     await device.connect();
+
                   } catch (e) {
                     // if (e.code != 'already_connected') {
                     //   throw e;
@@ -308,11 +346,41 @@ class AppRootState extends State<AppRoot> {
        ),
      );
    }
+
+   Timer.periodic(Duration(seconds: 8), (timer) { 
+    setState(() {
+                    if (_resized) {
+                      _resized = false;
+                      _animateHeight = 200.0;
+                      _animateWidth = 200.0;
+                    } else {
+                      _resized = true;
+                      _animateHeight = 300.0;
+                      _animateWidth = 300.0;
+                    }
+                  });
+   });
  
    return ListView(
      padding: const EdgeInsets.all(8),
      children: <Widget>[
        ...containers,
+
+       Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),),
+       AnimatedContainer(
+              duration: const Duration(seconds:3),
+              // vsync: this,
+              curve: Curves.bounceInOut,
+              // child: Container(
+              // alignment: Alignment(3,3),
+              width: _animateWidth,
+              height:_animateHeight,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.teal.shade400,),
+                    // ),
+              child: Text("Detecting devices...",),
+              
+        ),
+             
      ],
    );
  }

@@ -18,6 +18,7 @@ void createUser(String uid, String username, String email, int postureDurationGo
   });
 }
 
+
 bool updateUserDurationGoal(String uid, int hours, int minutes) {
   final db_ref = FirebaseDatabase.instance.ref();
   final profileRef = db_ref.child("/profiles/$uid");
