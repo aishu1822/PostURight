@@ -382,24 +382,24 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
         body: _currentWidget,
 
         bottomNavigationBar: BottomNavigationBar(
-          // fixedColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
-          selectedItemColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
-          unselectedItemColor: Color.fromARGB(255, 37, 5, 220).withOpacity(.94),
+          fixedColor: Colors.black,
+          // selectedItemColor: Color.fromARGB(255, 193, 6, 207).withOpacity(.94),
+          unselectedItemColor: Colors.black,
           items: const[
             BottomNavigationBarItem(
-              icon : Icon(Icons.home),
+              icon : ImageIcon(AssetImage('assets/images/home.png',)),
               label : 'Home',
             ),
             BottomNavigationBarItem(
-              icon : Icon(Icons.home),
+              icon : ImageIcon(AssetImage('assets/images/profile.png',)),
               label : 'Profile',
             ),
             BottomNavigationBarItem(
-              icon : Icon(Icons.business),
+              icon : ImageIcon(AssetImage('assets/images/exercise.png',)),
               label : 'Exercise',
             ),
             BottomNavigationBarItem(
-              icon : Icon(Icons.school),
+              icon : ImageIcon(AssetImage('assets/images/alert_settings.png',)),
               label : 'Alerts',
             ),
           ],
