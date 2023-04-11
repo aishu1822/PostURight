@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'colors.dart';
@@ -6,6 +8,7 @@ import 'text_field.dart';
 import 'home.dart';
 import 'app_root.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_model.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -63,10 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         // TODO: tell user the error
                                                         print("Error: ${error.toString()}");
                                                       });
-                          // Navigator.pushAndRemoveUntil(context,
-                          //   MaterialPageRoute(builder: (context) => AppRoot()),
-                          //   (Route<dynamic> route) => false,
-                          // );
                         }, 
                         child: Text("Log in"),
                       )

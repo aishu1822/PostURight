@@ -69,10 +69,6 @@ class _Registration1ScreenState extends State<Registration1Screen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                
-                                
-
-
                                 OutlinedButton(
                                   onPressed: (){}, 
                                   child: Text("Next")),

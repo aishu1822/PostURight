@@ -5,6 +5,8 @@ import 'text_field.dart';
 import 'colors.dart';
 import 'app_root.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_model.dart';
+import 'registration3.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
 
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  TextEditingController _usernameTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                loginTextField("Enter username", false, _emailTextController),
+                loginTextField("Enter username", false, _usernameTextController),
                 const SizedBox(
                   height: 20,
                 ),
@@ -61,18 +64,14 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                     .createUserWithEmailAndPassword(email: _emailTextController.text,
                                                     password: _passwordTextController.text).then((value) {
                                                       print("Created new account");
+                                                      createUser(FirebaseAuth.instance.currentUser!.uid, _usernameTextController.text, _emailTextController.text, 0);
                                                       Navigator.pushAndRemoveUntil(context,
-                                                        MaterialPageRoute(builder: (context) => AppRoot()),
+                                                        MaterialPageRoute(builder: (context) => Registration3Screen()),
                                                         (Route<dynamic> route) => false,
                                                       );
                                                     }).onError((error, stackTrace) {
                                                       print("Error: ${error.toString()}");
                                                   });
-
-                    // Navigator.pushAndRemoveUntil(context,
-                    //         MaterialPageRoute(builder: (context) => AppRoot()),
-                    //         (Route<dynamic> route) => false,
-                    //       );
                   }, 
                   child: Text("Create Account")
                 )
