@@ -47,7 +47,7 @@ class AppState extends State<App> {
     switch(_currentIndex) {
       case 0: return setState(() => _currentWidget = HomePage(title: 'Home'));
       case 1: return setState(() => _currentWidget = ProfilePage(title: 'Profile'));
-      case 2: return setState(() => _currentWidget = ExercisesPage(title: 'Exercises'));
+      case 2: return setState(() => _currentWidget = ExercisesPage());
       case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
     }
   }
