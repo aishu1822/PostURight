@@ -43,64 +43,85 @@ class _MyCardState extends State<MyCard> {
             ),
 
             Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                     Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                      mainAxisAlignment:
-                          MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
-                            "Maintain a 10 day streak",
-                            overflow: TextOverflow
-                                .ellipsis,
-                            textAlign:TextAlign.left,
-                            /* style: AppStyle.txtSFProRegular14*/),
-                        Padding(
-                            padding:const EdgeInsets.only(top: 3,),
-                            child: Container(
-                                height: 6,
-                                width: 230,
-                                decoration: BoxDecoration(
-                                    // color: ColorConstant.blueGray10005,
-                                    borderRadius:
-                                        BorderRadius.circular(3)),
-                                child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(3),
-                                    child: const LinearProgressIndicator(
-                                        value: 0.53,
-                                        // backgroundColor: ColorConstant.blueGray10005,
-                                        /*valueColor: AlwaysStoppedAnimation<Color>(ColorConstant.teal400)*/)))),
-                        const Padding(
-                            padding: EdgeInsets.only(top: 5,),
-                            child: Text("50% left",
-                                overflow:TextOverflow.ellipsis,
-                                textAlign:TextAlign.left,
-                                /*style: AppStyle.txtSFProRegular12*/)
-                        ),
+                        Row( children: [
+
+                          ClipOval(
+                            child: SizedBox.fromSize(
+                              size: const Size.fromRadius(23), // Image radius
+                              child: Image.asset(
+                                              'assets/Frame4.png',
+                                            ),
+                            ),
+                          ),
+
+                          
+
+                          Column( 
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            const Text(
+                                "Maintain a 10 day streak",
+                                overflow: TextOverflow
+                                    .ellipsis,
+                                // textAlign:TextAlign.left,
+                                /* style: AppStyle.txtSFProRegular14*/),
+                            Padding(
+                                padding:const EdgeInsets.only(top: 3,),
+                                child: Container(
+                                    height: 6,
+                                    width: 230,
+                                    decoration: BoxDecoration(
+                                        // color: ColorConstant.blueGray10005,
+                                        borderRadius:
+                                            BorderRadius.circular(3)),
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(3),
+                                        child: const LinearProgressIndicator(
+                                            value: 0.53,
+                                            // backgroundColor: ColorConstant.blueGray10005,
+                                            /*valueColor: AlwaysStoppedAnimation<Color>(ColorConstant.teal400)*/)))),
+                            const Padding(
+                                padding: EdgeInsets.only(top: 5,),
+                                child: Text("50% left",
+                                    overflow:TextOverflow.ellipsis,
+                                    textAlign:TextAlign.left,
+                                    /*style: AppStyle.txtSFProRegular12*/)
+                            ),],
+                          ),
+                          ]
+                        )
                       ],
                     ),
                   ],
                 ),
 
                 Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      ClipOval(
+                            child: SizedBox.fromSize(
+                              size: const Size.fromRadius(23), // Image radius
+                              child: Image.asset(
+                                              'assets/Frame4.png',
+                                            ),
+                            ),
+                          ),
                       Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          mainAxisAlignment:
-                          MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
                             const Text(
                               "Maintain a 20 day streak",
                               overflow: TextOverflow.ellipsis,
-                              textAlign:TextAlign.left,
+                              // textAlign:TextAlign.left,
                               /*style: AppStyle.txtSFProRegular14*/),
                           ]
                       ),

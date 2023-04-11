@@ -36,7 +36,9 @@ class _Registration2ScreenState extends State<Registration2Screen> {
                                 style: Style.txtSFProSemibold28
                               )
                           ),
-                    Column( children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                       Padding(
                           padding: const EdgeInsets.only(top: 38),
                           child: Text("How often do you work out?",
@@ -69,7 +71,9 @@ class _Registration2ScreenState extends State<Registration2Screen> {
                         )]),
 
 
-                      Column(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 38),
                           child: Text("What type of workouts do you prefer?",
@@ -101,7 +105,8 @@ class _Registration2ScreenState extends State<Registration2Screen> {
                             ),
                         ),]),
                 
-                        Row(
+                         Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children:[Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

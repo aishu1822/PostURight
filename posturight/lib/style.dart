@@ -37,6 +37,14 @@ static TextStyle txtPalanquinDarkRegular42 = TextStyle(
     fontFamily: 'SF Pro',
     fontWeight: FontWeight.w400,
   );
+  
+  
+  static TextStyle txtSFProRegular12 = TextStyle(
+    color: black,
+    fontSize: 12,//getFontSize(22,),
+    fontFamily: 'SF Pro',
+    fontWeight: FontWeight.w400,
+  );
 
  static TextStyle txtRobotoRegular16 = TextStyle(
     color: black,
@@ -44,5 +52,13 @@ static TextStyle txtPalanquinDarkRegular42 = TextStyle(
     fontFamily: 'RobotoRegular16Black90001',
     fontWeight: FontWeight.w400,
   );
+
+ static TextStyle txtRobotoRomanMedium28Teal900 = TextStyle(
+    color: Colors.teal,
+    fontSize: 28,
+    fontFamily: 'RobotoRomanMedium28Teal900',
+    fontWeight: FontWeight.w400,
+  );
+  
 
 }
