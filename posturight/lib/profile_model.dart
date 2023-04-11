@@ -55,6 +55,13 @@ Future<int> getUserBestDuration(String uid) async {
   
 }
 
+void updateDailyTotal(String uid, String date, int duration) {
+  final db_ref = FirebaseDatabase.instance.ref().child("/profiles/$uid/daily_total_duration");
+  db_ref.set({
+    date : duration.toString()
+  });
+}
+
 Future<bool> updateUserBestDuration(String uid, int new_duration) async {
   int current_best_duration = await getUserBestDuration(uid);
 

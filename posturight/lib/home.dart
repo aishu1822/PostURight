@@ -94,22 +94,27 @@ class _HomePageState extends State<HomePage> {
   Future<void> setPostureGoalDisplay() async {
     int posture_goal_seconds = await getUserPostureDurationGoal(FirebaseAuth.instance.currentUser!.uid);
     int total_mins = posture_goal_seconds ~/ 60;
+    int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
     print("total_mins = $total_mins");
     setState(() {
       _posture_goal_hours = total_mins ~/ 60;
       _posture_goal_mins = total_mins % 60;
+      _best_duration_today = (best_duration~/60);
     });
 
     // call so it initializes once without waiting 1 minute
-    updateDisplayUserBestDuration();
+    // updateDisplayUserBestDuration();
   }
 
-  Future<void> updateDisplayUserBestDuration() async {
-    int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
-    print("best_duratino = $best_duration");
-    setState(() {
-      _best_duration_today = (best_duration / 60).toInt();
-    });
+  void updateDisplayUserBestDuration() {
+    // int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
+    // print("best_duratino = $best_duration");
+    int duration = (DateTime.now().difference(startTime)).inSeconds;
+    if (duration > _best_duration_today) {
+      setState(() {
+        _best_duration_today = (duration / 60).toInt();
+      });
+    }    
   }
 
   void populateChartData() async {
@@ -373,6 +378,9 @@ class _HomePageState extends State<HomePage> {
 
             ElevatedButton(
               onPressed: (){
+
+                checkPosture();
+                updateDailyTotal(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().toIso8601String()).substring(5,10), seconds_straight);
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed out");
                   Navigator.pushAndRemoveUntil(context,
