@@ -12,6 +12,8 @@ import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:typed_data';
 import 'app_root.dart';
+import 'package:flutter/services.dart';
+import 'alert_settings.dart';
 
 final Guid accX_uuid = new Guid("00002101-0000-1000-8000-00805f9b34fb");
 final Guid accY_uuid = new Guid("00002102-0000-1000-8000-00805f9b34fb");
@@ -32,6 +34,8 @@ class _HomePageState extends State<HomePage> {
   final profileRef = database.child("/profile");
   double buttonDayHeightWidth = 40;
   var _selectedValue = DateTime.now();
+  
+
 
   List<int> accXchar=[], accYchar=[], accZchar=[], gyrXchar=[], gyrYchar=[], gyrZchar=[];
   String _current_posture = "nothing yet";
@@ -94,6 +98,7 @@ class _HomePageState extends State<HomePage> {
     if (accZ > 0.3) {
       setState(() {
         _current_posture = "slouching!";
+        HapticFeedback.lightImpact();
       });
     } else {
       if (_current_posture == "slouching!" || _current_posture == "nothing yet") {
@@ -316,6 +321,7 @@ class _HomePageState extends State<HomePage> {
               child: Card(
                   child: 
                     Text("Posture status: " + _current_posture),
+
                 ),
             ),
             Wrap(
