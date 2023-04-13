@@ -58,6 +58,8 @@ dependencies:
   flutter_isolate: ^2.0.4
   cron: ^0.5.1
   animated_splash_screen: ^1.3.0
+  table_calendar: ^3.0.8
+  scrollable_clean_calendar: ^1.4.0
 
 dev_dependencies:
   flutter_test:
