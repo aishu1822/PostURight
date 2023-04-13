@@ -44,7 +44,7 @@ class _AlertSettingsPageState extends State<AlertSettingsPage> {
   }
 
   @override
-  void initSta1te() {
+  void initState() {
     // TODO: implement initState
     super.initState();
 
