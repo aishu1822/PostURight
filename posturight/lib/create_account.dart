@@ -31,7 +31,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         elevation: 0,
         title: const Text(
           "Sign Up",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 23, 114, 109),),
         ),
       ),
       body: Container (

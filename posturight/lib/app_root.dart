@@ -360,7 +360,12 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
           },
         );
       },
-      child: const ImageIcon(AssetImage('assets/images/connect_button.png',), color: Color.fromARGB(255,89,195,178),),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [          
+          const ImageIcon(AssetImage('assets/images/connect_button.png',), color: Color.fromARGB(255,89,195,178),),
+          const Text("Tap to connect to\ndevice once detected...", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontFamily: 'SF Pro'),),
+        ])
     );           
    }
  

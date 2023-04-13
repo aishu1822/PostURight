@@ -16,9 +16,8 @@ class TitleScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
             backgroundColor: appBackgroundColor,
-            body: Container(
-                width: double.maxFinite,
-                padding: const EdgeInsets.only(left: 24,right: 24,),
+            body: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -31,7 +30,7 @@ class TitleScreen extends StatelessWidget {
                       const SizedBox(height: 15,),
                       Container(
                           alignment: Alignment.bottomCenter,
-                          child: Text("Helping you fix your posture...",
+                          child: const Text("Helping you fix your posture...",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: TextStyle(fontSize: 18),

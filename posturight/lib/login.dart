@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
               elevation: 0,
               title: const Text(
                 "Log in",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 23, 114, 109),),
               ),
             ),
             body: Container(
