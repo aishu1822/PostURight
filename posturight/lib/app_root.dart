@@ -18,13 +18,24 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'colors.dart';
 
 // TODO: put in firebase and make API call to read
-final Guid accX_uuid = Guid("00002101-0000-1000-8000-00805f9b34fb");
-final Guid accY_uuid = Guid("00002102-0000-1000-8000-00805f9b34fb");
-final Guid accZ_uuid = Guid("00002103-0000-1000-8000-00805f9b34fb");
-final Guid gyrX_uuid = Guid("00002104-0000-1000-8000-00805f9b34fb");
-final Guid gyrY_uuid = Guid("00002105-0000-1000-8000-00805f9b34fb");
-final Guid gyrZ_uuid = Guid("00002106-0000-1000-8000-00805f9b34fb");
-final Guid angle_uuid = Guid("00002107-0000-1000-8000-00805f9b34fb");
+
+Map guids = {};
+
+// final Guid accX_uuid = Guid("00002101-0000-1000-8000-00805f9b34fb");
+// final Guid accY_uuid = Guid("00002102-0000-1000-8000-00805f9b34fb");
+// final Guid accZ_uuid = Guid("00002103-0000-1000-8000-00805f9b34fb");
+// final Guid gyrX_uuid = Guid("00002104-0000-1000-8000-00805f9b34fb");
+// final Guid gyrY_uuid = Guid("00002105-0000-1000-8000-00805f9b34fb");
+// final Guid gyrZ_uuid = Guid("00002106-0000-1000-8000-00805f9b34fb");
+// final Guid angle_uuid = Guid("00002107-0000-1000-8000-00805f9b34fb");
+
+Guid accX_uuid  = Guid("0");
+Guid accY_uuid  = Guid("0");
+Guid accZ_uuid  = Guid("0");
+Guid gyrX_uuid  = Guid("0");
+Guid gyrY_uuid  = Guid("0");
+Guid gyrZ_uuid  = Guid("0");
+Guid angle_uuid = Guid("0");
 
 Timer? postureNotifTimer;
 String currentPosture = "nothing yet";
@@ -33,6 +44,24 @@ BluetoothDevice? _connectedDevice = null;
 DateTime startTime = DateTime.now();
 
 final Map<Guid, List<int>> readValues = Map<Guid, List<int>>();
+
+void populateUuids() async {
+  var uuid_data = await FirebaseDatabase.instance.ref().child('uuid').get();
+  if (!uuid_data.exists) {
+    print("failed to retrieve guid data for ble connection");  
+    return;
+  } 
+
+  print(uuid_data.toString());
+  guids = uuid_data.value as Map;
+  accX_uuid = Guid(guids["accX_uuid"]);
+  accY_uuid = Guid(guids["accY_uuid"]);
+  accZ_uuid = Guid(guids["accZ_uuid"]);
+  gyrX_uuid = Guid(guids["gyrX_uuid"]);
+  gyrY_uuid = Guid(guids["gyrY_uuid"]);
+  gyrZ_uuid = Guid(guids["gyrZ_uuid"]);
+  angle_uuid = Guid(guids["angle_uuid"]);
+}
 
 @pragma('vm:entry-point')
 void countDailyTotal(String arg) { 
@@ -131,7 +160,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    
+    populateUuids();
     compute(countDailyTotal, "arg");
     scheduleUpdateDailyTotalDB();
 
@@ -194,8 +223,6 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
       case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
     }
   }  
-  
-  
 
   _addDeviceTolist(final BluetoothDevice device) {
    if (!devicesList.contains(device)) {
@@ -253,15 +280,20 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
   return null;
  }
 
+
  ListView _buildListViewOfDevices() {
    List<Container> containers = <Container>[];
    BluetoothDevice? device = getDevice();
-   if (device != null) {
+
+   containers.add(Container(child: Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.15, 20, 0),),));
+   if (device == null) {
+    containers.add(Container(child:Text("No device detected", textAlign: TextAlign.center,)));
+   }
+   else {
   //  for (BluetoothDevice device in devicesList) {
     //  print(device.id);
     //  print(device.name);
     //  if (device.id.toString() != "78:21:84:AA:36:56" || device.name.toString() != "PostURight Sensor") continue;
-    containers.add(Container(child: Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.15, 20, 0),),));
      containers.add(
        Container(
         //  height: 50,
@@ -270,45 +302,11 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
              Expanded(
                child: Column(
                  children: <Widget>[
-                   Text("${device.name == '' ? '(unknown device)' : device.name} detected"),
+                  Text("${device.name == '' ? '(unknown device)' : device.name} detected"),
                   //  Text(device.id.toString()),
                  ],
                ),
              ),
-            //  ElevatedButton(
-            //    child: Text(
-            //      'Connect',
-            //      style: TextStyle(color: Colors.white),
-            //    ),
-            //    onPressed: () async {
-            //     List<BluetoothService> newServices;
-            //     List<BluetoothCharacteristic> bclist;
-            //     flutterBlue.stopScan();
-            //       try {
-            //         await device.connect();
-
-            //       } catch (e) {
-            //         // if (e.code != 'already_connected') {
-            //         //   throw e;
-            //         // }
-            //         print(e);
-            //       } finally {
-            //         newServices = await device.discoverServices();
-            //         // TODO: remove idx hard coding
-            //         bclist = newServices[2].characteristics; 
-            //         for (BluetoothCharacteristic c in bclist) {
-            //           c.value.listen((value) {
-            //             readValues[c.uuid] = value;
-            //           });                      
-            //           await c.setNotifyValue(true);
-            //         }
-            //         setState(() {
-            //           _services = newServices;
-            //           _connectedDevice = device; 
-            //         });
-            //       }                  
-            //    },
-            //  ),
            ],
          ),
        ),
@@ -334,7 +332,9 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
                 List<BluetoothCharacteristic> bclist;
                 flutterBlue.stopScan();
                   try {
-                    await device!.connect();
+                    if (device != null) {
+                      await device.connect();
+                    }
 
                   } catch (e) {
                     // if (e.code != 'already_connected') {
@@ -342,6 +342,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
                     // }
                     print(e);
                   } finally {
+                    if (device == null) return;
                     newServices = await device!.discoverServices();
                     // TODO: remove idx hard coding
                     bclist = newServices[2].characteristics; 
@@ -359,7 +360,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
           },
         );
       },
-      child: const ImageIcon(AssetImage('assets/images/Rectangle2.png',), color: Color.fromARGB(255,89,195,178),),
+      child: const ImageIcon(AssetImage('assets/images/connect_button.png',), color: Color.fromARGB(255,89,195,178),),
     );           
    }
  

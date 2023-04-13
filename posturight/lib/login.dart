@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'colors.dart';
@@ -68,6 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       });
                         }, 
                         child: Text("Log in"),
+                        style: ElevatedButton.styleFrom(
+                          shadowColor:Color.fromARGB(255, 9, 57, 54),
+                          minimumSize: Size(MediaQuery.of(context).size.width-10, 55),
+                          primary: Color.fromARGB(255, 23, 114, 109),
+                          side: BorderSide(color: Color.fromARGB(255, 23, 114, 109),),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            )
+                          )
                       )
                     ],
                   )
