@@ -127,7 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 37,
                                           child: 
                                           Image.network(
-                                           ['image_1.png'],
+                                            'assets/Frame4.png',
+                                           //['image_1.png'],
                                            width: 36,
                                            height: 37,
                                           ),
@@ -164,7 +165,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 36,
                                           child:
                                           Image.network(
-                                            [image_2.png],
+                                            'assets/Frame4.png',
+                                            //[image_2.png],
                                             width: 36,
                                             height: 36,
 
@@ -202,7 +204,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                          height: 37,
                                          child:
                                          Image.network(
-                                          ['image_3.png'],
+                                          'assets/Frame4.png',
+                                          //['image_3.png'],
                                           width: 36,
                                           height: 37,
                                          ),
@@ -290,7 +293,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 37,
                             child:
                              Image.network(
-                              ['url'],
+                              'assets/Frame4.png',
+                              //['url'],
                               width: 36,
                               height: 37,
 
@@ -329,7 +333,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 37,
                             child:
                              Image.network(
-                              ['Url2'],
+                              'assets/Frame4.png',
+                              //['Url2'],
                               width: 36,
                               height: 37,
                              ),
@@ -460,7 +465,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       child: 
                                        Image.network(
-                                        ['icon1'],
+                                        'assets/Frame4.png',
+                                       // ['icon1'],
                                         width: 30,
                                         height: 30,
                                        ),
@@ -485,7 +491,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       child:
                                       Image.network(
-                                        ['icon2'],
+                                        'assets/Frame4.png',
+                                        //['icon2'],
                                         width: 30,
                                         height: 30,
                                       ),
@@ -505,7 +512,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     height: 24.76,
                                     child:
                                     Image.network(
-                                      ['icon3'],
+                                      'assets/Frame4.png',
+                                      //['icon3'],
                                       width: 17.05,
                                       height: 24.76,
                                     ),
@@ -537,7 +545,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         child: 
                                         Image.network(
-                                          ['icon4'],
+                                          'assets/Frame4.png',
+                                          //['icon4'],
                                           fit: BoxFit.cover,
                                         )
 
@@ -547,7 +556,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                 ),
-                              )
+                              
 
                             ],
                           ),
@@ -562,68 +571,68 @@ class _ProfilePageState extends State<ProfilePage> {
               ),                  
 
 
-                                 Text("Leaderboard",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                      /*style: AppStyle.txtSFProRegular12*/),
-                                Padding(
-                                    padding:const EdgeInsets.only(top: 14,),
-                                    child: Row(children: [
-                                      ClipOval(
-                                        child: SizedBox.fromSize(
-                                          size: const Size.fromRadius(23), // Image radius
-                                          child: Image.asset(
-                                                          'assets/Frame4.png',
-                                                        ),
-                                        ),
-                                      ),
-                                      Padding(
-                                          padding: const EdgeInsets.only(top: 8, left: 13,),
-                                          child:Text("John",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              /*style:AppStyle.txtPoppinsMedium14*/),),
-                                    ])),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 23,),
-                                    child: Row(children: [
-                                      ClipOval(
-                                        child: SizedBox.fromSize(
-                                          size: const Size.fromRadius(23), // Image radius
-                                          child: Image.asset(
-                                                          'assets/Frame4.png',
-                                                        ),
-                                        ),
-                                      ),
-                                      Padding(
-                                          padding: const EdgeInsets.only(top: 8, left: 13,),
-                                          child: Text("Jane",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              /*style:AppStyle.txtPoppinsMedium14*/))
-                                    ])),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 21, bottom:10),
-                                    child: Row(children: [
-                                      ClipOval(
-                                        child: SizedBox.fromSize(
-                                          size: const Size.fromRadius(23), // Image radius
-                                          child: Image.asset(
-                                                          'assets/Frame4.png',
-                                                        ),
-                                        ),
-                                      ),
-                                      Padding(
-                                          padding: const EdgeInsets.only(top: 8, left: 13,),
-                                          child: Text("Jane",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              /*style:AppStyle.txtPoppinsMedium14*/))
-                                    ])),
+                                //  Text("Leaderboard",
+                                //       overflow: TextOverflow.ellipsis,
+                                //       textAlign: TextAlign.center,
+                                //       /*style: AppStyle.txtSFProRegular12*/),
+                                // Padding(
+                                //     padding:const EdgeInsets.only(top: 14,),
+                                //     child: Row(children: [
+                                //       ClipOval(
+                                //         child: SizedBox.fromSize(
+                                //           size: const Size.fromRadius(23), // Image radius
+                                //           child: Image.asset(
+                                //                           'assets/Frame4.png',
+                                //                         ),
+                                //         ),
+                                //       ),
+                                //       Padding(
+                                //           padding: const EdgeInsets.only(top: 8, left: 13,),
+                                //           child:Text("John",
+                                //               overflow: TextOverflow.ellipsis,
+                                //               textAlign: TextAlign.left,
+                                //               /*style:AppStyle.txtPoppinsMedium14*/),),
+                                //     ])),
+                                // Padding(
+                                //     padding: const EdgeInsets.only(top: 23,),
+                                //     child: Row(children: [
+                                //       ClipOval(
+                                //         child: SizedBox.fromSize(
+                                //           size: const Size.fromRadius(23), // Image radius
+                                //           child: Image.asset(
+                                //                           'assets/Frame4.png',
+                                //                         ),
+                                //         ),
+                                //       ),
+                                //       Padding(
+                                //           padding: const EdgeInsets.only(top: 8, left: 13,),
+                                //           child: Text("Jane",
+                                //               overflow: TextOverflow.ellipsis,
+                                //               textAlign: TextAlign.left,
+                                //               /*style:AppStyle.txtPoppinsMedium14*/))
+                                //     ])),
+                                // Padding(
+                                //     padding: const EdgeInsets.only(top: 21, bottom:10),
+                                //     child: Row(children: [
+                                //       ClipOval(
+                                //         child: SizedBox.fromSize(
+                                //           size: const Size.fromRadius(23), // Image radius
+                                //           child: Image.asset(
+                                //                           'assets/Frame4.png',
+                                //                         ),
+                                //         ),
+                                //       ),
+                                //       Padding(
+                                //           padding: const EdgeInsets.only(top: 8, left: 13,),
+                                //           child: Text("Jane",
+                                //               overflow: TextOverflow.ellipsis,
+                                //               textAlign: TextAlign.left,
+                                //               /*style:AppStyle.txtPoppinsMedium14*/))
+                                //     ])),
                                   ]
                   ),
                 ),
-              )
+              
             ],
           ),
         ),

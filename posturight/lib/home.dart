@@ -1,31 +1,30 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:posturight/login.dart';
-import 'calendar.dart';
 import 'package:calender_picker/calender_picker.dart';
+import 'package:posturight/profile_model.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'colors.dart';
 import 'main.dart';
 import 'title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'package:flutter_blue/flutter_blue.dart';
-import 'dart:typed_data';
 import 'app_root.dart';
-import 'package:flutter/services.dart';
-import 'alert_settings.dart';
+import 'dart:core';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
-final Guid accX_uuid = new Guid("00002101-0000-1000-8000-00805f9b34fb");
-final Guid accY_uuid = new Guid("00002102-0000-1000-8000-00805f9b34fb");
-final Guid accZ_uuid = new Guid("00002103-0000-1000-8000-00805f9b34fb");
-final Guid gyrX_uuid = new Guid("00002104-0000-1000-8000-00805f9b34fb");
-final Guid gyrY_uuid = new Guid("00002105-0000-1000-8000-00805f9b34fb");
-final Guid gyrZ_uuid = new Guid("00002106-0000-1000-8000-00805f9b34fb");
+class _ChartData {
+  _ChartData(this.x, this.y);
+ 
+  final String x;
+  final int y;
+}
 
 class HomePage extends StatefulWidget {
   HomePage({required this.title, Key? key, Function? refresh}) : super(key: key);
   final String? title;
-  final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
+  
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -33,255 +32,145 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final profileRef = database.child("/profile");
   double buttonDayHeightWidth = 40;
+  String _displayPostureStatus = "nothing yet";
+  late Timer updatePostureStatusTimer;
+  late Timer updateUserBestDurationTimer;
   var _selectedValue = DateTime.now();
-  
-
-
-  List<int> accXchar=[], accYchar=[], accZchar=[], gyrXchar=[], gyrYchar=[], gyrZchar=[];
-  String _current_posture = "nothing yet";
-  List<BluetoothService> _services = <BluetoothService>[];
-  final FlutterBlue flutterBlue = FlutterBlue.instance;
-  List<BluetoothDevice> devicesList = <BluetoothDevice>[];
-  BluetoothDevice? _connectedDevice = null;
+  double _angle = 0.0;
+  int _best_duration_today = 0;
+  bool _showGoodPostureImage = false;
+  int _posture_goal_hours = 0;
+  int _posture_goal_mins = 0;
+  // Map data_map = {};
+  List<_ChartData> chart_data = [];
+  int last_three_days_total = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    flutterBlue.connectedDevices
-        .asStream()
-        .listen((List<BluetoothDevice> devices) {
-      for (BluetoothDevice device in devices) {
-        _addDeviceTolist(device);
-      }
-    });
-    flutterBlue.scanResults.listen((List<ScanResult> results) {
-      for (ScanResult result in results) {
-        _addDeviceTolist(result.device);
-      }
-    });
-    flutterBlue.startScan();
-
-    var period = const Duration(seconds:1);
-    Timer.periodic(period,(arg){
-      checkPosture();
-    });
-  }
-
-  double interpretValue(List<int> data) {
-    if (data.length < 4) return 0;
-    final bytes = Uint8List.fromList(data);
-    final byteData = ByteData.sublistView(bytes);
-    double value = byteData.getFloat32(0,Endian.little);
-    print(value); 
-    return value;
-  }
-
-  void checkPosture() {
-    if (_connectedDevice == null) return;
-
-    // BluetoothService serv = _services[2]; // assuming 3 services and IMU service is the third one
-    // assert(serv.uuid.toString().split('-')[0] == '00001101');
+    setPostureGoalDisplay();
     
-    print("timer thread");
+    loadFakeDailyData();
+    populateChartData();
     
-    double accX = interpretValue(widget.readValues[accX_uuid]!);
-    double accY = interpretValue(widget.readValues[accY_uuid]!);
-    double accZ = interpretValue(widget.readValues[accZ_uuid]!);
-    double gyrX = interpretValue(widget.readValues[gyrX_uuid]!);
-    double gyrY = interpretValue(widget.readValues[gyrX_uuid]!);
-    double gyrZ = interpretValue(widget.readValues[gyrX_uuid]!);
+    updateUserBestDurationTimer = Timer.periodic(const Duration(minutes: 1), (timer) { 
+      print("=============================================================================> updating best duration");
+      updateDisplayUserBestDuration();
+    });
+    
+    updatePostureStatusTimer = Timer.periodic(const Duration(seconds:1),(arg) {
 
-    print("Accelerometer: accX = $accX, accY = $accY, accZ = $accZ");
-    print("Gyroscope: gyrX = $gyrX, gyrY = $gyrY, gyrZ = $gyrZ");
-
-    if (accZ > 0.3) {
-      setState(() {
-        _current_posture = "slouching!";
-        HapticFeedback.lightImpact();
-      });
-    } else {
-      if (_current_posture == "slouching!" || _current_posture == "nothing yet") {
+      // TODO: do only a single set state
+      if (_displayPostureStatus != currentPosture) {
         setState(() {
-        _current_posture = "straight!";
-      });
+          _displayPostureStatus = currentPosture;
+          if (currentPosture != "straight") {
+            _showGoodPostureImage = false;
+          } else {
+            _showGoodPostureImage = true;
+          } 
+        });
       }
+      if (readValues.containsKey(angle_uuid)) {
+        double new_angle = interpretValue(readValues[angle_uuid]!) - 90.0;
+        if ((new_angle - _angle).abs() > 5) {
+          setState(() {
+            _angle = new_angle;
+          });
+        }
+      }
+
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    updatePostureStatusTimer.cancel();
+    updateUserBestDurationTimer.cancel();
+  }
+
+  Future<void> setPostureGoalDisplay() async {
+    int posture_goal_seconds = await getUserPostureDurationGoal(FirebaseAuth.instance.currentUser!.uid);
+    int total_mins = posture_goal_seconds ~/ 60;
+    int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
+    print("total_mins = $total_mins");
+    setState(() {
+      _posture_goal_hours = total_mins ~/ 60;
+      _posture_goal_mins = total_mins % 60;
+      _best_duration_today = (best_duration~/60);
+    });
+
+    // call so it initializes once without waiting 1 minute
+    // updateDisplayUserBestDuration();
+  }
+
+  void updateDisplayUserBestDuration() {
+    // int best_duration = await getUserBestDuration(FirebaseAuth.instance.currentUser!.uid);
+    // print("best_duratino = $best_duration");
+    int duration = (DateTime.now().difference(startTime)).inSeconds;
+    if (duration > _best_duration_today) {
+      setState(() {
+        _best_duration_today = (duration / 60).toInt();
+      });
     }    
   }
 
-  _addDeviceTolist(final BluetoothDevice device) {
-   if (!devicesList.contains(device)) {
-     setState(() {
-       devicesList.add(device);
-     });
-   }
- }
+  void populateChartData() async {
+    Map loaded_data_map = await getUserChartData(FirebaseAuth.instance.currentUser!.uid);
+    final keys_list = loaded_data_map.keys.toList();
+    final values_list = loaded_data_map.values.toList();
+    final last_week = keys_list.getRange(max(0, loaded_data_map.length-7), loaded_data_map.length);
+    final last_three_days = values_list.getRange(max(0, values_list.length-4), max(0, values_list.length-1));
 
- List<ButtonTheme> _buildReadWriteNotifyButton(BluetoothCharacteristic characteristic) {
-   List<ButtonTheme> buttons = <ButtonTheme>[];
- 
-   if (characteristic.properties.read) {
-     buttons.add(
-       ButtonTheme(
-         minWidth: 10,
-         height: 20,
-         child: Padding(
-           padding: const EdgeInsets.symmetric(horizontal: 4),
-           child: ElevatedButton(
-             child: Text('READ', style: TextStyle(color: Colors.white)),
-             onPressed: () async {
-               var sub = characteristic.value.listen((value) {
-                 setState(() {
-                   widget.readValues[characteristic.uuid] = value;
-                 });
-               });
-               await characteristic.read();
-               sub.cancel();
-             },
-           ),
-         ),
-       ),
-     );
-   }
+    int total = 0;
+    last_three_days.forEach((element) {
+      total += element as int;
+    });
+    // ratio /= (3*12*3600);
+    // print("ratio = $ratio");
 
-   if (characteristic.properties.notify) {
-     buttons.add(
-       ButtonTheme(
-         minWidth: 10,
-         height: 20,
-         child: Padding(
-           padding: const EdgeInsets.symmetric(horizontal: 4),
-           child: ElevatedButton(
-             child: Text('NOTIFY', style: TextStyle(color: Colors.white)),
-             onPressed: () async {
-              characteristic.value.listen((value) {
-                widget.readValues[characteristic.uuid] = value;
-              });
-              await characteristic.setNotifyValue(true);
-             },
-           ),
-         ),
-       ),
-     );
-   }
- 
-   return buttons;
- }
+    List<_ChartData> new_state_list = [];
+    last_week.forEach((element) {
+      new_state_list.add(_ChartData(element.substring(5,10), loaded_data_map[element]~/3600));
+    });
+    
+    setState(() {
+      chart_data = new_state_list;
+      last_three_days_total = total;
+    });
+  }
 
- ListView _buildConnectDeviceView() {
-  List<Container> containers = <Container>[];
- 
-   for (BluetoothService service in _services) {
-     List<Widget> characteristicsWidget = <Widget>[];
-     for (BluetoothCharacteristic characteristic in service.characteristics) {
-       characteristicsWidget.add(
-         Align(
-           alignment: Alignment.centerLeft,
-           child: Column(
-             children: <Widget>[
-               Row(
-                 children: <Widget>[
-                   Text(characteristic.uuid.toString(), style: TextStyle(fontWeight: FontWeight.bold)),
-                 ],
-               ),
-               Row(
-                 children: <Widget>[
-                   ..._buildReadWriteNotifyButton(characteristic),
-                 ],
-               ),
-             ],
-           ),
-         ),
-       );
-     }
-     containers.add(
-       Container(
-         child: ExpansionTile(
-             title: Text(service.uuid.toString()),
-             children: characteristicsWidget),
-       ),
-     );
-   }
- 
-   return ListView(
-     padding: const EdgeInsets.all(8),
-     children: <Widget>[
-       ...containers,
-     ],
-   );
- }
+  Widget chartWidget() {
+    // List<_ChartData> data = [];
+    // print("data_map is here");
+    // print(data_map);
+    // data_map.keys.forEach((element) {
+      // print("element");
+      // print(element.runtimeType);
 
- ListView _buildListViewOfDevices() {
-   List<Container> containers = <Container>[];
-   for (BluetoothDevice device in devicesList) {
-    //  print(device.id);
-    //  print(device.name);
-     if (device.id.toString() != "78:21:84:AA:36:56" || device.name.toString() != "PostURight Sensor") continue;
-     containers.add(
-       Container(
-         height: 50,
-         child: Row(
-           children: <Widget>[
-             Expanded(
-               child: Column(
-                 children: <Widget>[
-                   Text(device.name == '' ? '(unknown device)' : device.name),
-                   Text(device.id.toString()),
-                 ],
-               ),
-             ),
-             ElevatedButton(
-               child: Text(
-                 'Connect',
-                 style: TextStyle(color: Colors.white),
-               ),
-               onPressed: () async {
-                List<BluetoothService> new_services;
-                List<BluetoothCharacteristic> bclist;
-                flutterBlue.stopScan();
-                  try {
-                    await device.connect();
-                  } catch (e) {
-                    // if (e.code != 'already_connected') {
-                    //   throw e;
-                    // }
-                    print(e);
-                  } finally {
-                    new_services = await device.discoverServices();
-                    // TODO: remove idx hard coding
-                    bclist = new_services[2].characteristics; 
-                    for (BluetoothCharacteristic c in bclist) {
-                      c.value.listen((value) {
-                        widget.readValues[c.uuid] = value;
-                      });                      
-                      await c.setNotifyValue(true);
-                    }
-                    setState(() {
-                      _services = new_services;
-                      _connectedDevice = device; 
-                    });
+      // print(data_map[element].runtimeType);
+      // data.add(_ChartData(element.substring(5,10), data_map[element]));
+    // });
+    print("data is here");
+    print(chart_data);
 
-                    // Navigator.pushAndRemoveUntil(context,
-                    //   MaterialPageRoute(builder: (context) => AppRoot()),
-                    //   (Route<dynamic> route) => false,
-                    // );
-                  }
-                  
-               },
-             ),
-           ],
-         ),
-       ),
-     );
-   }
- 
-   return ListView(
-     padding: const EdgeInsets.all(8),
-     children: <Widget>[
-       ...containers,
-     ],
-   );
- }
+    charts.TooltipBehavior _tooltip = charts.TooltipBehavior(enable: true);
+    return charts.SfCartesianChart( 
+            primaryXAxis: charts.CategoryAxis(axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
+            primaryYAxis: charts.NumericAxis(minimum: 0, maximum: 12, interval: 1, axisLine: AxisLine(width: 0), majorGridLines: MajorGridLines(width: 0),),
+            tooltipBehavior: _tooltip,
+            plotAreaBorderWidth: 0,
+            series: <charts.ChartSeries<_ChartData, String>>[
+              charts.AreaSeries<_ChartData, String>(
+                  dataSource: chart_data,
+                  xValueMapper: (_ChartData data, _) => data.x,
+                  yValueMapper: (_ChartData data, _) => data.y,
+                  color: Color.fromARGB(255, 13, 144, 162),
+              ),
+            ],
+          );           
+  }
 
   Widget homeWidget() {
     return MaterialApp( 
@@ -290,7 +179,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: appBackgroundColor,
       body:ListView(
       children: [
-        Padding(padding: const EdgeInsets.all(10),),
+        const Padding(padding: EdgeInsets.all(10),),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -307,48 +196,190 @@ class _HomePageState extends State<HomePage> {
               },
             ),
 
-            ElevatedButton (
-              onPressed: () {
-                profileRef.set({'firstname': 'Jane', 'lastname': 'Doe'});
-              },
-              child: Text("Test set db"),
+            Container(
+              // height: 200,
+              // width: 300,
+              margin: const EdgeInsets.all(0),
+              constraints: const BoxConstraints(minWidth: 300.0, maxHeight: 200.0),
+              child: Card(
+                  elevation: 2,
+                  margin: const EdgeInsets.all(0),
+                  child: 
+                  Column(  
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Container(
+                      padding: const EdgeInsets.only(top:0, bottom: 0),
+                      constraints: const BoxConstraints(maxWidth: 280.0),
+                      child:
+                        SfLinearGauge(
+                          minimum: -90,
+                          maximum: 90,
+                          showLabels: false,
+                          showTicks: false,
+                          ranges: [
+                            LinearGaugeRange(
+                              startValue: -90,
+                              endValue: 90,
+                              position: LinearElementPosition.cross,
+                              edgeStyle: LinearEdgeStyle.bothCurve,
+                              midWidth: 15,
+                              endWidth: 15,
+                              startWidth: 15,
+                              shaderCallback: (bounds) => const LinearGradient(
+                                colors: <Color>[
+                                    Color.fromARGB(255, 239, 139, 8),
+                                    Color.fromARGB(255, 204, 191, 43),
+                                    Color.fromARGB(255, 104, 217, 92),
+                                    Color.fromARGB(255, 204, 191, 43),
+                                    Color.fromARGB(255, 239, 139, 8),
+                                  ],
+                                  stops: <double>[0.0, 0.4, 0.5, 0.6, 1.0],
+                                ).createShader(bounds),
+                            )
+                          ],
+                          markerPointers: [
+                            LinearWidgetPointer(
+                              value: _angle,
+                              enableAnimation: true,
+                              child: Container(
+                                height: 25,
+                                width: 10,
+                                decoration: BoxDecoration(color: Colors.white, 
+                                                          border: Border(bottom: BorderSide(color: Colors.grey.shade400), 
+                                                                          top: BorderSide(color: Colors.grey.shade400), 
+                                                                          left: BorderSide(color: Colors.grey.shade400), 
+                                                                          right: BorderSide(color: Colors.grey.shade400)
+                                                                        ),
+                                                          borderRadius: const BorderRadius.all(Radius.circular(20),),
+                                                          boxShadow: [BoxShadow(color: Colors.black)],
+                                                          )
+                              ), 
+                            )
+                          ],                            
+                          ),
+                        ),
+                    AnimatedCrossFade(
+                      crossFadeState: _showGoodPostureImage ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                      duration: const Duration(milliseconds: 500),
+                      firstChild: Container(
+                        child: const Text("Your back is straight. Good job!", style: TextStyle(color: Colors.green)),
+                      ),
+                      secondChild: Container(
+                        child: Text("You are slouching by ${_angle.toInt().abs().toString()} degrees", style: const TextStyle(color: Color.fromARGB(255, 245, 115, 9)),),
+                      ),                    
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 5)),
+                    AnimatedCrossFade(
+                      crossFadeState: _showGoodPostureImage ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                      duration: const Duration(milliseconds: 500),
+                      firstChild: Container(
+                        child: Image.asset(
+                          'assets/images/good_posture.png',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ),
+                      secondChild: Container(
+                        child: Image.asset(
+                          'assets/images/bad_posture.png',
+                          width: 100,
+                          height: 100,
+                        ),
+                      ),                    
+                    ),
+                  ],
+                )
+              ),
             ),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: const BoxConstraints(minWidth: 150.0),
+                  child:Card(
+                    elevation: 2,
+                    child:Column(children:[
+                      Text("Goal: $_posture_goal_hours hr $_posture_goal_mins min", textAlign: TextAlign.center,),
+                      const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
+                      SizedBox(
+                        height: 80.0,
+                        width: 80.0,
+                        child: 
+                          SfRadialGauge(
+                              axes: [
+                                RadialAxis(
+                                  axisLineStyle: const AxisLineStyle(
+                                    thickness: 5
+                                  ),
+                                  showTicks: false,
+                                  showLabels: false,
+                                  startAngle: 0,
+                                  endAngle: 0,
+                                  minimum: 0,
+                                  maximum: max(1, (_posture_goal_hours*60 + _posture_goal_mins)).toDouble(),
+                                  ranges: [
+                                    GaugeRange(startValue: 0, endValue: _best_duration_today.toDouble()),
+                                  ],
+                                  annotations: [
+                                    GaugeAnnotation(widget: Text("$_best_duration_today min"))
+                                  ],
+                                ),
+                              ],
+                            ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
+                  ]),)
+                ),
+                 Container(
+                  constraints: const BoxConstraints(minWidth: 150.0),
+                  child:Card(
+                    elevation: 2,
+                    child:Column(children:[
+                      const Text("Ratio (last 3 days)", textAlign: TextAlign.center,),
+                      const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
+                      SizedBox(
+                        height: 80.0,
+                        width: 80.0,
+                        child: 
+                          SfRadialGauge(
+                            axes: [
+                              RadialAxis(
+                                axisLineStyle: const AxisLineStyle(
+                                  thickness: 5
+                                ),
+                                showTicks: false,
+                                showLabels: false,
+                                startAngle: 0,
+                                endAngle: 0,
+                                minimum: 0,
+                                maximum: 36*3600,
+                                ranges: [
+                                  GaugeRange(startValue: 0, endValue: last_three_days_total.toDouble())
+                                ],
+                                annotations: [
+                                  GaugeAnnotation(widget: Text("${double.parse(((last_three_days_total/(36*3600)*100)).toStringAsFixed(2))}%"))
+                                ],
+                              )
+                            ],
+                          ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
+                    ])
+                  ),)
+              ]
+            ),
 
             Container(
-              height: 200,
-              width: 300,
-              child: Card(
-                  child: 
-                    Text("Posture status: " + _current_posture),
-
-                ),
-            ),
-            Wrap(
-              children: [
-                Card(
-                  child: 
-                    SimpleCircularProgressBar(
-                        mergeMode: true,
-                        onGetText: (double value) {
-                            return Text('${value.toInt()}%');
-                        },
-                    ),
-                ),
-                Card(
-                  child: 
-                    SimpleCircularProgressBar(
-                        mergeMode: true,
-                        onGetText: (double value) {
-                            return Text('${value.toInt()}%');
-                        },
-                    ),
-                ),
-              ]
+              constraints: const BoxConstraints(maxHeight: 100),
+              child:chartWidget(),
             ),
 
             ElevatedButton(
               onPressed: (){
+
+                checkPosture();
+                updateDailyTotal(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().toIso8601String()).substring(5,10), seconds_straight);
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed out");
                   Navigator.pushAndRemoveUntil(context,
@@ -357,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                           );
                 });
               }, 
-              child: Text("Logout"),
+              child: const Text("Logout"),
             ),
           ],
       )
@@ -366,21 +397,10 @@ class _HomePageState extends State<HomePage> {
     ))
     );
   }
-
-  Widget _buildView() {
-   if (_connectedDevice != null) {
-     return homeWidget();//_buildConnectDeviceView();
-   }
-   return Scaffold(
-       appBar: AppBar(
-         title: Text("Posture status: " + _current_posture),//Text(widget.title),
-       ),
-       body:_buildListViewOfDevices()
-      );
- }
+ 
 
   @override
   Widget build(BuildContext context) {
-    return _buildView();
+    return homeWidget();
   }
 }

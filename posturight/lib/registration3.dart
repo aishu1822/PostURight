@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:posturight/app_root.dart';
 import 'colors.dart';
 import 'style.dart';
 import 'time.dart';
+import 'profile_model.dart';
 
 // ignore_for_file: must_be_immutable
 class Registration3Screen extends StatefulWidget {
@@ -10,17 +14,14 @@ class Registration3Screen extends StatefulWidget {
 }
 
 class _Registration3ScreenState extends State<Registration3Screen> {
-  TextEditingController nameController = TextEditingController();
-  final items = ['One', 'Two', 'Three', 'Four'];
-  String selectedValue = 'Four';
-  late FixedExtentScrollController _controller;
+  late FixedExtentScrollController _hoursController;
+  late FixedExtentScrollController _minutesController;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    _controller = FixedExtentScrollController();
+    _hoursController = FixedExtentScrollController();
+    _minutesController = FixedExtentScrollController();
   }
 
   @override
@@ -29,161 +30,89 @@ class _Registration3ScreenState extends State<Registration3Screen> {
         child: Scaffold(
             backgroundColor: appBackgroundColor,
             resizeToAvoidBottomInset: false,
-            body: Container(
-                width: double.maxFinite,
-                padding: const EdgeInsets.only(left: 21, top: 30, right: 21, bottom: 30,),
-                child: Wrap(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Spacer(),
-                      Container(
-                          // width: 200,
-                          margin: const EdgeInsets.only(left: 3,),
-                          child: Text("How active are you?",
-                                maxLines: null,
-                                textAlign: TextAlign.left,
-                                style: Style.txtSFProSemibold28
-                              )
-                          ),
+            body: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: 
+                  [
+                    Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),),
+                    const Text("Set your daily goal", textAlign: TextAlign.left, style: TextStyle(fontSize: 28, fontFamily: "SF Pro", color: Color.fromARGB(255, 23, 114, 109), fontWeight: FontWeight.w500),),
+                    Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.1, 20, 0),),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Padding(
-                          padding: const EdgeInsets.only(top: 38),
-                          child: Text("How often do you work out?",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              // style: AppStyle.txtRobotoRegular16
-                            )
-                          ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.white, side: const BorderSide(
-                              width: 1, // the thickness
-                              color: Colors.black // the color of the border
-                          )),
-                          onPressed: (){}, 
-                          child: 
-                            DropdownButton<String>(
-                              value: selectedValue,
-                              onChanged: (value) => selectedValue,
-                              items: items
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) => DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
-                              icon: Icon(Icons.arrow_drop_down),
-                              iconSize: 42,
-                              underline: SizedBox(),   
-                            ),
-                        )]),
-
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 38),
-                          child: Text("What type of workouts do you prefer?",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              // style: AppStyle.txtRobotoRegular16
-                            )
-                          ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.white, side: const BorderSide(
-                              width: 1, // the thickness
-                              color: Colors.black // the color of the border
-                          )),
-                          onPressed: (){}, 
-                          child: 
-                            DropdownButton<String>(
-                              value: selectedValue,
-                              onChanged: (value) => selectedValue,
-                              items: items
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) => DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            ))
-                                    .toList(),
-                              icon: Icon(Icons.arrow_drop_down),
-                              iconSize: 42,
-                              underline: SizedBox(),   
+                        const Text("I want to maintain proper posture for"),
+                        Row(       
+                          mainAxisAlignment: MainAxisAlignment.center,                    
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 80,
+                              child: ListWheelScrollView.useDelegate(
+                                controller: _hoursController,
+                                itemExtent: 50,
+                                perspective: 0.005,
+                                diameterRatio: 1.2,
+                                physics: FixedExtentScrollPhysics(),
+                                childDelegate: ListWheelChildBuilderDelegate(
+                                  childCount: 13,
+                                  builder: (context, index) {
+                                    return MyHours(
+                                      hours: index,
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
-                        ),]),
-                
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:[Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
 
-                              Wrap( children: [
-                              Container(
-                                width: 70,
-                                height: 80,
-                                child: ListWheelScrollView.useDelegate(
-                                  controller: _controller,
-                                  itemExtent: 50,
-                                  perspective: 0.005,
-                                  diameterRatio: 1.2,
-                                  physics: FixedExtentScrollPhysics(),
-                                  childDelegate: ListWheelChildBuilderDelegate(
-                                    childCount: 13,
-                                    builder: (context, index) {
-                                      return MyHours(
-                                        hours: index,
-                                      );
-                                    },
-                                  ),
+                            // minutes wheel
+                            Container(
+                              width: 70,
+                              height: 80,
+                              child: ListWheelScrollView.useDelegate(
+                                controller: _minutesController,
+                                itemExtent: 50,
+                                perspective: 0.005,
+                                diameterRatio: 1.2,
+                                physics: FixedExtentScrollPhysics(),
+                                childDelegate: ListWheelChildBuilderDelegate(
+                                  childCount: 60,
+                                  builder: (context, index) {
+                                    return MyMinutes(
+                                      mins: index,
+                                    );
+                                  },
                                 ),
                               ),
-
-                              SizedBox(
-                                width: 10,
-                              ),
-
-                              // minutes wheel
-                              Container(
-                                width: 70,
-                                height: 80,
-                                child: ListWheelScrollView.useDelegate(
-                                  itemExtent: 50,
-                                  perspective: 0.005,
-                                  diameterRatio: 1.2,
-                                  physics: FixedExtentScrollPhysics(),
-                                  childDelegate: ListWheelChildBuilderDelegate(
-                                    childCount: 60,
-                                    builder: (context, index) {
-                                      return MyMinutes(
-                                        mins: index,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              ]),
-
-                              OutlinedButton(
-                                onPressed: (){}, 
-                                child: Text("Next")),
-                              OutlinedButton(
-                                onPressed: (){}, 
-                                child: Text("Skip")),
-                            ],)]),
-                      
-                    ]))));
-  }
-
-  onTapNext(BuildContext context) {
-    // Navigator.pushNamed(context, AppRoutes.iphone14FourOneScreen);
-  }
-
-  onTapTxtSkip(BuildContext context) {
-    // Navigator.pushNamed(context, AppRoutes.iphone14FourOneScreen);
+                            ),
+                          ]
+                        ),
+                        Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),),
+                        OutlinedButton(
+                                onPressed: (){
+                                  print("hours: ${_hoursController.selectedItem}");
+                                  print("mins: ${_minutesController.selectedItem}");
+                                  updateUserDurationGoal(FirebaseAuth.instance.currentUser!.uid, _hoursController.selectedItem, _minutesController.selectedItem);
+                                  Navigator.pushAndRemoveUntil(context,
+                                                        MaterialPageRoute(builder: (context) => AppRoot()),
+                                                        (Route<dynamic> route) => false,
+                                                      );
+                                }, 
+                                child: Text("Next", style: TextStyle(color: Colors.white),),
+                                style: ElevatedButton.styleFrom(
+                                        shadowColor:Color.fromARGB(255, 9, 57, 54),
+                                        minimumSize: Size(MediaQuery.of(context).size.width-250, 40),
+                                        primary: Color.fromARGB(255, 23, 114, 109),
+                                        side: BorderSide(color: Color.fromARGB(255, 23, 114, 109),),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          )
+                                        )
+                        ),
+                    ],
+                  ),
+                ]
+              ),
+          ));
   }
 }
