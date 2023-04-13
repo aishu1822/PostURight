@@ -30,13 +30,20 @@ class _Registration3ScreenState extends State<Registration3Screen> {
         child: Scaffold(
             backgroundColor: appBackgroundColor,
             resizeToAvoidBottomInset: false,
-            body: Container(
-                child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+            body: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: 
+                  [
+                    Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),),
+                    const Text("Set your daily goal", textAlign: TextAlign.left, style: TextStyle(fontSize: 28, fontFamily: "SF Pro", color: Color.fromARGB(255, 23, 114, 109), fontWeight: FontWeight.w500),),
+                    Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.1, 20, 0),),
+                    Column(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-
-                        Wrap( 
+                        const Text("I want to maintain proper posture for"),
+                        Row(       
+                          mainAxisAlignment: MainAxisAlignment.center,                    
                           children: [
                             Container(
                               width: 70,
@@ -56,10 +63,6 @@ class _Registration3ScreenState extends State<Registration3Screen> {
                                   },
                                 ),
                               ),
-                            ),
-
-                            SizedBox(
-                              width: 10,
                             ),
 
                             // minutes wheel
@@ -84,7 +87,7 @@ class _Registration3ScreenState extends State<Registration3Screen> {
                             ),
                           ]
                         ),
-
+                        Padding(padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),),
                         OutlinedButton(
                                 onPressed: (){
                                   print("hours: ${_hoursController.selectedItem}");
@@ -95,10 +98,20 @@ class _Registration3ScreenState extends State<Registration3Screen> {
                                                         (Route<dynamic> route) => false,
                                                       );
                                 }, 
-                                child: Text("Next")
+                                child: Text("Next", style: TextStyle(color: Colors.white),),
+                                style: ElevatedButton.styleFrom(
+                                        shadowColor:Color.fromARGB(255, 9, 57, 54),
+                                        minimumSize: Size(MediaQuery.of(context).size.width-250, 40),
+                                        primary: Color.fromARGB(255, 23, 114, 109),
+                                        side: BorderSide(color: Color.fromARGB(255, 23, 114, 109),),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          )
+                                        )
                         ),
                     ],
                   ),
+                ]
               ),
           ));
   }

@@ -31,7 +31,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
         elevation: 0,
         title: const Text(
           "Sign Up",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color:Color.fromARGB(255, 23, 114, 109),),
         ),
       ),
       body: Container (
@@ -73,7 +73,16 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                                       print("Error: ${error.toString()}");
                                                   });
                   }, 
-                  child: Text("Create Account")
+                  child: Text("Create Account"),
+                  style: ElevatedButton.styleFrom(
+                          shadowColor:Color.fromARGB(255, 9, 57, 54),
+                          minimumSize: Size(MediaQuery.of(context).size.width-10, 55),
+                          primary: Color.fromARGB(255, 23, 114, 109),
+                          side: BorderSide(color: Color.fromARGB(255, 23, 114, 109),),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            )
+                          ),
                 )
               ],
             )
