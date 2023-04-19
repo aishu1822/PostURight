@@ -323,6 +323,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
           icon: child!,
           style: IconButton.styleFrom(shape: const CircleBorder(),),
           onPressed: () async {
+            if (device == null) return;
             Timer.periodic(const Duration(seconds:1), (timer) {
               setState(() {
                 targetValue = targetValue == 200.0 ? 300.0 : 200.0;
@@ -364,7 +365,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
         alignment: Alignment.center,
         children: const [          
           ImageIcon(AssetImage('assets/images/connect_button.png',), color: Color.fromARGB(255,89,195,178),),
-          Text("Tap to connect to\ndevice once detected...", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontFamily: 'SF Pro'),),
+          Text("Tap to connect to\ndevice once detected...\n\nMake sure to\nenable bluetooth", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontFamily: 'SF Pro'),),
         ])
     );           
    }

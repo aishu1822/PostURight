@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   // Map data_map = {};
   List<_ChartData> chart_data = [];
   int last_three_days_total = 0;
+  bool _isShow = false;
 
   @override
   void initState() {
@@ -176,18 +177,41 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp( 
       
       home: Scaffold (
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              
+              onPressed: () {
+                // Navigator.push(context,
+                //                 MaterialPageRoute(builder: (context) => Calendar()),
+                //               );
+              }, 
+            
+              icon: Icon(Icons.calendar_month_outlined, color: Colors.black, size:40)
+            ),
+          ],
+        ),
       backgroundColor: appBackgroundColor,
       body:ListView(
       children: [
-        const Padding(padding: EdgeInsets.all(10),),
+        const Padding(padding: EdgeInsets.fromLTRB(10,0,10,10),),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CalenderPicker(
               DateTime.now(),
               initialSelectedDate: DateTime.now(),
-              selectionColor: Colors.black,
+              selectionColor: Color.fromARGB(255,89,195,178),
               selectedTextColor: Colors.white,
+
+              // width: 40,
+              // height: 60,
+
+              dateTextStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+              dayTextStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
               onDateChange: (date) {
                 // New date selected
                 setState(() {
@@ -199,7 +223,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               // height: 200,
               // width: 300,
-              margin: const EdgeInsets.all(0),
+              margin: const EdgeInsets.fromLTRB(0,10,0,0),
               constraints: const BoxConstraints(minWidth: 300.0, maxHeight: 200.0),
               child: Card(
                   elevation: 2,
@@ -296,6 +320,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
+                  padding: EdgeInsets.only(top:10),
                   constraints: const BoxConstraints(minWidth: 150.0),
                   child:Card(
                     elevation: 2,
@@ -332,6 +357,7 @@ class _HomePageState extends State<HomePage> {
                   ]),)
                 ),
                  Container(
+                  padding: EdgeInsets.only(top:10),
                   constraints: const BoxConstraints(minWidth: 150.0),
                   child:Card(
                     elevation: 2,
@@ -371,8 +397,48 @@ class _HomePageState extends State<HomePage> {
             ),
 
             Container(
-              constraints: const BoxConstraints(maxHeight: 100),
-              child:chartWidget(),
+              // constraints: const BoxConstraints(maxHeight: 100),
+              child:
+                Column(
+                  
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const SizedBox(
+                    //   height: 50,
+                    // ),
+                    Visibility(
+                      visible: _isShow,
+                      child: chartWidget(),
+                    ),
+                    // const SizedBox(
+                    //   height: 50,
+                    // ),
+                    Row(
+                      children:[
+                    Padding(
+                      padding: EdgeInsets.only(left:30),
+                      child:ElevatedButton(
+                      
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 23, 114, 109),
+                      ),
+                      onPressed: () {
+                        setState(
+                          () {
+                            _isShow = !_isShow;
+                          },
+                        );
+                      },
+                      child: Text(
+                        _isShow ? 'Hide' : 'Show daily summary',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    )
+                    )])
+                  ],
+                ),
+              // chartWidget(),
             ),
 
             ElevatedButton(
@@ -380,6 +446,7 @@ class _HomePageState extends State<HomePage> {
 
                 checkPosture();
                 updateDailyTotal(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().toIso8601String()).substring(5,10), seconds_straight);
+                updateUserBestDuration(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().difference(startTime)).inSeconds);
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed out");
                   Navigator.pushAndRemoveUntil(context,

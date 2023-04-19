@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posturight/login.dart';
+import 'package:posturight/onboarding.dart';
 import 'home.dart';
 import 'text_field.dart';
 import 'colors.dart';
@@ -66,7 +67,7 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
                                                       print("Created new account");
                                                       createUser(FirebaseAuth.instance.currentUser!.uid, _usernameTextController.text, _emailTextController.text, 0);
                                                       Navigator.pushAndRemoveUntil(context,
-                                                        MaterialPageRoute(builder: (context) => Registration3Screen()),
+                                                        MaterialPageRoute(builder: (context) => OnBoardingPage()),
                                                         (Route<dynamic> route) => false,
                                                       );
                                                     }).onError((error, stackTrace) {
