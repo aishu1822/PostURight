@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:calender_picker/calender_picker.dart';
+import 'package:posturight/exercise_calender.dart';
 import 'package:posturight/profile_model.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -185,9 +186,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               
               onPressed: () {
-                // Navigator.push(context,
-                //                 MaterialPageRoute(builder: (context) => Calendar()),
-                //               );
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => ExerciseCalendar()));
               }, 
             
               icon: Icon(Icons.calendar_month_outlined, color: Colors.black, size:40)

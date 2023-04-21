@@ -16,6 +16,10 @@ import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:cron/cron.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'colors.dart';
+import 'package:flutter/services.dart';
+import 'exercise_calender.dart';
+import 'package:vibration/vibration.dart';
+
 
 // TODO: put in firebase and make API call to read
 
@@ -112,6 +116,13 @@ Future<void> checkPosture() async {
       if (!updated) {
         print("failed to update best duration");
       }
+      // HapticFeedback.heavyImpact();//lightImpact();
+      Vibration.vibrate( intensities: [1000]
+
+        // pattern: [500, 1000, 500, 2000, 500, 3000, 500, 500],
+        //           intensities: [0, 128, 0, 255, 0, 64, 0, 255],
+
+      );
       print("new_duration: $new_duration");
     }
 
@@ -274,7 +285,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
   for (BluetoothDevice device in devicesList) {
     //  print(device.id);
     //  print(device.name);
-     if (device.id.toString() != "78:21:84:AA:36:56" || device.name.toString() != "PostURight Sensor") continue;
+     if (/*device.id.toString() != "78:21:84:AA:36:56" ||*/ device.name.toString() != "PostURight Sensor") continue;
      return device;
   }
   return null;

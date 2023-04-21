@@ -13,12 +13,12 @@ class Streak {
   Streak(this.startDate, this.endDate);
 }
 
-class MyApp extends StatefulWidget {
+class ExerciseCalendar extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _ExerciseCalendarState createState() => _ExerciseCalendarState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _ExerciseCalendarState extends State<ExerciseCalendar> {
   DateTime minD = DateTime.now().subtract(Duration(days: 30));
   DateTime maxD = DateTime.now().add(Duration(days: 30));
   late final calendarController;// = CleanCalendarController(minDate: minD,maxDate: maxD);
@@ -28,25 +28,32 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     Firebase.initializeApp().then((value) => _updateCalendarController());
-    calendarController = CleanCalendarController(minDate: minD,maxDate: maxD);
+    calendarController = CleanCalendarController(minDate: DateTime.now(),maxDate:  DateTime.now().add(const Duration(days: 365)));
+    
   }
 
   Future<void> _updateCalendarController() async {
+    // print("entered updateCalendarController");
     String current_uuid = FirebaseAuth.instance.currentUser!.uid;
     final dailyData = await FirebaseDatabase.instance.ref().child('profiles/$current_uuid/best_duration_held').get();
-
-    if (!dailyData.exists) return;
+    
+    // if (!dailyData.exists) return;
+    // if (dailyData.value == null) return;
+    print("daily data = ${dailyData.toString()}");
+    print("daily data type= ${dailyData.value.runtimeType}");
     Map streaks = dailyData.value as Map;
 
     // final streaks = streakData.map((doc) => Streak(doc['startDate'].toDate(), doc['endDate'].toDate())).toList();
-    
+    // print("streaks = $streaks");
     if (streaks.isNotEmpty) {
       //final mostRecentStreak = streaks.last;
       //calendarController.initialDateSelected = mostRecentStreak.startDate;
       for (final dateKey in streaks.keys) {
         //calendarController.selectRange(streak.startDate, streak.endDate);
-        DateTime d = DateTime(dateKey);
-        calendarController.selectRange(d, d);
+        // DateTime d = DateTime.parse(dateKey);
+        // print("dateKey = $dateKey");
+        // calendarController.selectRange(d, d);
+        // calendarController.selectRange(DateTime.now(), DateTime.now().add(const Duration(days: 365)));
       }
     }
   }
@@ -87,14 +94,30 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             FutureBuilder<DataSnapshot>(
-              future: FirebaseDatabase.instance.ref('users').child('user1').get(),
+              future: FirebaseDatabase.instance.ref().child("profiles/${FirebaseAuth.instance.currentUser!.uid}/best_duration_held").get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  Map snapshot_map = snapshot as Map;
-                  // final streakCount = snapshot_map.data?['streakCount'] ?? 0;
-                  // final totalDaysUsed = snapshot.data?['totalDaysUsed'] ?? 0;
-                  final streakCount = snapshot_map['streakCount'];
-                  final totalDaysUsed = snapshot_map['totalDaysUsed'];
+                  if (snapshot.data == null) return const CircularProgressIndicator();
+                  if (!snapshot.data!.exists) return const CircularProgressIndicator();
+                  // print("${snapshot.data}");
+                  Map snapshot_map = snapshot.data!.value as Map;
+                  // final streakCount = snapshot_map?['streakCount'] ?? 0;
+                  // final totalDaysUsed = snapshot_map?['totalDaysUsed'] ?? 0;
+                  // final streakCount = snapshot_map['streakCount'];
+                  // final totalDaysUsed = snapshot_map['totalDaysUsed'];
+
+                  final duration_data = snapshot_map;
+                  print("duration data type: ${duration_data.toString()}");
+                  int streakCount = 0;
+                  int totalDaysUsed = duration_data.length;
+
+                  for (final date in duration_data.keys) {
+                    print("duration data type: ${duration_data[date].runtimeType}");
+                    if (duration_data[date] > 3600) {
+                      streakCount++;
+                    }
+                  }
+
                   return Column(
                     children: [
                       Text('Current streak: $streakCount days'),
