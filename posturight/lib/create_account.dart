@@ -29,6 +29,9 @@ class CreateAccountScreenState extends State<CreateAccountScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar (
         backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+                color: Color.fromARGB(255, 9, 57, 54),
+              ),
         elevation: 0,
         title: const Text(
           "Sign Up",

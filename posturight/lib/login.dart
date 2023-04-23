@@ -26,6 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
             extendBodyBehindAppBar: true,
             appBar: AppBar (
               backgroundColor: Colors.transparent,
+              iconTheme: IconThemeData(
+                color: Color.fromARGB(255, 9, 57, 54),
+              ),
               elevation: 0,
               title: const Text(
                 "Log in",
@@ -43,11 +46,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      loginTextField("Enter username", false, _emailTextController),
+                      loginTextField("email", false, _emailTextController),
                       const SizedBox(
                         height: 20,
                       ),
-                      loginTextField("Enter password", false, _passwordTextController),
+                      loginTextField("password", false, _passwordTextController),
                       const SizedBox(
                         height: 20,
                       ),

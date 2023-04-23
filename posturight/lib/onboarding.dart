@@ -32,7 +32,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   // }
 
   Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset('assets/$assetName', width: width);
+    return Image.asset('assets/$assetName', width: width, height: 330,);
   }
 
   @override
@@ -80,9 +80,9 @@ textAlign: TextAlign.left,
           decoration: const PageDecoration(bodyAlignment: Alignment.topLeft, ),
         ),
         PageViewModel(
-          title: "Make sure the power cable is plugged into your sensor",
+          title: "Make sure the power cable is plugged into your sensor\n",
           bodyWidget: _buildImage('images/plug_in_instructions.png'),
-          decoration: const PageDecoration(imageAlignment: Alignment.topCenter),
+          decoration: const PageDecoration(imageAlignment: Alignment.center, titlePadding: EdgeInsets.only(top: 24)),         
 
         ),
         PageViewModel(

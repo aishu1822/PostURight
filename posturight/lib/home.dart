@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     setPostureGoalDisplay();
     
-    loadFakeDailyData();
+    loadFakeDailyData(FirebaseAuth.instance.currentUser!.uid);
     populateChartData();
     
     updateUserBestDurationTimer = Timer.periodic(const Duration(minutes: 1), (timer) { 
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     // call so it initializes once without waiting 1 minute
-    // updateDisplayUserBestDuration();
+    updateDisplayUserBestDuration();
   }
 
   void updateDisplayUserBestDuration() {

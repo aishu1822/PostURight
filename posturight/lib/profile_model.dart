@@ -7,8 +7,8 @@ void createUser(String uid, String username, String email, int postureDurationGo
     'username' : username,
     'email' : email,
     'duration_goal' : postureDurationGoal,
-    'best_duration_held' : 0,
-    'daily_total_duration' : 0,
+    'best_duration_held' : {},
+    'daily_total_duration' : {},
   };
 
   final db_ref = FirebaseDatabase.instance.ref();
@@ -77,10 +77,10 @@ Future<bool> updateUserBestDuration(String uid, int new_duration) async {
   return true;
 }
 
-void loadFakeDailyData() {
+void loadFakeDailyData(String uid) {
 
   final db_ref = FirebaseDatabase.instance.ref();
-  final profileRef = db_ref.child("/profiles/fake_uid");
+  final profileRef = db_ref.child("/profiles/demo");
 
   final data = {
       'username' : 'fake',
@@ -109,7 +109,7 @@ void loadFakeDailyData() {
 
 Future<Map> getUserChartData(String uid) async {
   final db_ref = FirebaseDatabase.instance.ref();
-  final data = await db_ref.child('profiles/fake_uid/daily_total_duration').get();
+  final data = await db_ref.child('profiles/$uid/daily_total_duration').get();
   
   if (data.exists) {
     print("getting chart data");
