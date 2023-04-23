@@ -65,6 +65,7 @@ dependencies:
   scrollable_clean_calendar: ^1.4.0
   introduction_screen: ^3.1.7
   vibration: ^1.7.6
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +102,9 @@ flutter:
     - assets/shoulderstretch.png
     - assets/singlelegextension.png
     - assets/wallslides.png
+    - assets/bronze_badge.png
+    - assets/gold_badge.png
+    - assets/silver_badge.jpg
     - assets/images/
     - assets/icons/
     - assets/DB/

@@ -229,9 +229,9 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
   void _loadScreen() {
     switch(_currentIndex) {
       case 0: return setState(() => _currentWidget = HomePage(title: 'Home'));
-      case 1: return setState(() => _currentWidget = ProfilePage(title: 'Profile'));
+      case 1: return setState(() => _currentWidget = ProfilePage());
       case 2: return setState(() => _currentWidget = ExercisesPage());
-      case 3: return setState(() => _currentWidget = AlertSettingsPage(title: 'Alert Settings'));    
+      case 3: return setState(() => _currentWidget = AlertSettingsPage());    
     }
   }  
 

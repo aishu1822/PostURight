@@ -184,12 +184,12 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           actions: [
             IconButton(
-              
+              constraints: BoxConstraints(minWidth: 120, minHeight: 60),
               onPressed: () {
                  Navigator.push(context, MaterialPageRoute(builder: (context) => ExerciseCalendar()));
               }, 
             
-              icon: Icon(Icons.calendar_month_outlined, color: Colors.black, size:40)
+              icon: ImageIcon(AssetImage('assets/images/cal_button.png',), color: Colors.black, size: 100.0),
             ),
           ],
         ),
@@ -286,10 +286,15 @@ class _HomePageState extends State<HomePage> {
                       crossFadeState: _showGoodPostureImage ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                       duration: const Duration(milliseconds: 500),
                       firstChild: Container(
-                        child: const Text("Your back is straight. Good job!", style: TextStyle(color: Colors.green)),
+                        child: const Text("Your back is straight. Good job!", style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600)),
                       ),
                       secondChild: Container(
-                        child: Text("You are slouching by ${_angle.toInt().abs().toString()} degrees", style: const TextStyle(color: Color.fromARGB(255, 245, 115, 9)),),
+                        child: RichText(text: TextSpan(children: [WidgetSpan(child: ImageIcon(AssetImage('assets/images/Layer_1.png',), color: Colors.orange.shade800),), 
+                                                                  TextSpan(
+                                                                    text: "You are slouching by ${_angle.toInt().abs().toString()}\u00B0",
+                                                                    style: const TextStyle(color: Color.fromARGB(255, 245, 115, 9), fontWeight: FontWeight.w600),
+                                                                  )])) 
+                        //Text("You are slouching by ${_angle.toInt().abs().toString()}\u00B0", style: const TextStyle(color: Color.fromARGB(255, 245, 115, 9), fontWeight: FontWeight.w600),),
                       ),                    
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 5)),
@@ -324,7 +329,9 @@ class _HomePageState extends State<HomePage> {
                   child:Card(
                     elevation: 2,
                     child:Column(children:[
-                      Text("Goal: $_posture_goal_hours hr $_posture_goal_mins min", textAlign: TextAlign.center,),
+                      Text("Goal: $_posture_goal_hours hr $_posture_goal_mins min", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 23, 114, 109), 
+                                                                                                                                  fontFamily: "Roboto",
+                                                                                                                                  fontWeight: FontWeight.w600),),
                       const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
                       SizedBox(
                         height: 80.0,
@@ -361,7 +368,9 @@ class _HomePageState extends State<HomePage> {
                   child:Card(
                     elevation: 2,
                     child:Column(children:[
-                      const Text("Ratio (last 3 days)", textAlign: TextAlign.center,),
+                      const Text("Ratio (last 3 days)", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 23, 114, 109), 
+                                                                                                      fontFamily: "Roboto",
+                                                                                                      fontWeight: FontWeight.w600),),
                       const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),
                       SizedBox(
                         height: 80.0,
