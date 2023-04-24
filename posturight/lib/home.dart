@@ -368,7 +368,7 @@ class _HomePageState extends State<HomePage> {
                   child:Card(
                     elevation: 2,
                     child:Column(children:[
-                      const Text("Ratio (last 3 days)", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 23, 114, 109), 
+                      const Text("Ratio (previous 3 days)", textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 23, 114, 109), 
                                                                                                       fontFamily: "Roboto",
                                                                                                       fontWeight: FontWeight.w600),),
                       const Padding(padding: EdgeInsets.only(top:10, left:15, right:15)),

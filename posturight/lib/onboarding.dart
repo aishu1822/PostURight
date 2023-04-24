@@ -63,18 +63,18 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       pages: [
         PageViewModel(
           title: "Privacy and your PostURight Sensor",
-          bodyWidget: const Text(
-                        "At PostURight, we value your privacy and are committed to protecting your personal information. This privacy disclaimer is designed to inform you of how we collect, use, and store your personal data when you use our wearable posture sensor." +
-  "Collection of Data: We collect data related to your posture using our wearable posture sensor. This includes data such as your body position, movement, and activity. We may also collect personal information such as your name, email address, and device information." +
-  "Use of Data: The data we collect is used to improve our products and services, and to provide you with personalized feedback on your posture. We may also use your personal information to communicate with you regarding product updates, offers, and promotions." +
-"Sharing of Data: We do not sell your personal data to third parties. However, we may share your data with trusted third-party service providers who help us in providing our products and services. We may also share data with law enforcement agencies, regulatory authorities, or legal counsel, if required by law." +
+          bodyWidget: RichText(
+                        text: const TextSpan(text:"At PostURight, we value your privacy and are committed to protecting your personal information. This privacy disclaimer is designed to inform you of how we collect, use, and store your personal data when you use our wearable posture sensor.\n\n" +
+  "Collection of Data: We collect data related to your posture using our wearable posture sensor. This includes data such as your body position, movement, and activity. We may also collect personal information such as your email address and device information.\n\n" +
+  "Use of Data: The data we collect is used to improve our products and services, and to provide you with personalized feedback on your posture. We may also use your personal information to communicate with you regarding product updates, offers, and promotions.\n\n" +
+"Sharing of Data: We do not sell your personal data to third parties. However, we may share your data with trusted third-party service providers who help us in providing our products and services. We may also share data with law enforcement agencies, regulatory authorities, or legal counsel, if required by law.\n\n" +
 "Data Storage: We take all reasonable precautions to safeguard your personal information. We store your data securely in our systems and protect it from unauthorized access, disclosure, alteration, or destruction." +
-"Consent: By using our wearable posture sensor, you consent to the collection, use, and storage of your personal data in accordance with this privacy disclaimer." +
-"Changes to Privacy Disclaimer: We may update this privacy disclaimer from time to time. Any changes will be posted on our website, and we encourage you to review this privacy disclaimer periodically." +
+"Consent: By using our wearable posture sensor, you consent to the collection, use, and storage of your personal data in accordance with this privacy disclaimer.\n\n" +
+"Changes to Privacy Disclaimer: We may update this privacy disclaimer from time to time. Any changes will be posted on our website, and we encourage you to review this privacy disclaimer periodically.\n\n" +
 "Opt out Policy: " +
-"You may opt-out of receiving any, or all, of these communications from Us by following the unsubscribe link or instructions provided in any email We send or by contacting Us." +
-"Contact Us: If you have any questions or concerns regarding our privacy disclaimer or our data handling practices, please contact us at PostURight." +
-"Thank you for choosing PostURight and trusting us with your personal information.",
+"You may opt-out of receiving any, or all, of these communications from Us by following the unsubscribe link or instructions provided in any email We send or by contacting us.\n\n" +
+"Contact Us: If you have any questions or concerns regarding our privacy disclaimer or our data handling practices, please contact us at help@posturight.com\n\n" +
+"Thank you for choosing PostURight and trusting us with your personal information.", style: TextStyle(color: Colors.black)),
 textAlign: TextAlign.left,
                       ),
           decoration: const PageDecoration(bodyAlignment: Alignment.topLeft, ),
