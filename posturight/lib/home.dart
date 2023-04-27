@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     setPostureGoalDisplay();
     
-    loadFakeDailyData(FirebaseAuth.instance.currentUser!.uid);
+    // loadFakeDailyData(FirebaseAuth.instance.currentUser!.uid);
     populateChartData();
     
     updateUserBestDurationTimer = Timer.periodic(const Duration(minutes: 1), (timer) { 
@@ -119,6 +119,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void populateChartData() async {
+    print("entered populateChartData");
     Map loaded_data_map = await getUserChartData(FirebaseAuth.instance.currentUser!.uid);
     final keys_list = loaded_data_map.keys.toList();
     final values_list = loaded_data_map.values.toList();
@@ -154,7 +155,7 @@ class _HomePageState extends State<HomePage> {
       // print(data_map[element].runtimeType);
       // data.add(_ChartData(element.substring(5,10), data_map[element]));
     // });
-    print("data is here");
+    // print("data is here");
     print(chart_data);
 
     charts.TooltipBehavior _tooltip = charts.TooltipBehavior(enable: true);
@@ -453,8 +454,11 @@ class _HomePageState extends State<HomePage> {
               onPressed: (){
 
                 checkPosture();
-                updateDailyTotal(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().toIso8601String()).substring(5,10), seconds_straight);
-                updateUserBestDuration(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().difference(startTime)).inSeconds);
+
+                if (FirebaseAuth.instance.currentUser!.uid != "UV4kYXAhjCR7fbw6sCBBjOTW0b13") {
+                  updateDailyTotal(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().toIso8601String()).substring(5,10), seconds_straight);
+                  updateUserBestDuration(FirebaseAuth.instance.currentUser!.uid, (DateTime.now().difference(startTime)).inSeconds);
+                }
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed out");
                   Navigator.pushAndRemoveUntil(context,

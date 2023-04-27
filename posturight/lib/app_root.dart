@@ -117,7 +117,7 @@ Future<void> checkPosture() async {
         print("failed to update best duration");
       }
       // HapticFeedback.heavyImpact();//lightImpact();
-      Vibration.vibrate( intensities: [1000]
+      Vibration.vibrate( intensities: [2000]
 
         // pattern: [500, 1000, 500, 2000, 500, 3000, 500, 500],
         //           intensities: [0, 128, 0, 255, 0, 64, 0, 255],
@@ -355,7 +355,7 @@ class AppRootState extends State<AppRoot> with TickerProviderStateMixin {
                     print(e);
                   } finally {
                     if (device == null) return;
-                    newServices = await device!.discoverServices();
+                    newServices = await device.discoverServices();
                     // TODO: remove idx hard coding
                     bclist = newServices[2].characteristics; 
                     for (BluetoothCharacteristic c in bclist) {
