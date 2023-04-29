@@ -1,3 +1,23 @@
 # PostURight
 
 A mobile application that can help users recognize when they are exhibiting poor posture, as well as keep track of their posture habits.
+![Screenshot_2023-04-29_013835](https://user-images.githubusercontent.com/43894897/235313588-a36e2cd1-41e3-4272-8c17-62a2604d2c98.jpg)
+![Screenshot_2023-04-29_013858](https://user-images.githubusercontent.com/43894897/235313589-ee6abbe1-4c6b-4fe1-9577-aa8ad8cee5d2.jpg)
+![Screenshot_2023-04-29_014116](https://user-images.githubusercontent.com/43894897/235313590-fa497aa3-2f74-4d02-bbca-8dd4056f614f.jpg)
+![Screenshot_2023-04-29_014147](https://user-images.githubusercontent.com/43894897/235313591-910b2ecb-dc15-4f8a-8f96-5b6d08ef326e.jpg)
+![Screenshot_2023-04-29_014213](https://user-images.githubusercontent.com/43894897/235313592-9e992bff-6af5-4946-b9ff-66d3631933a8.jpg)
+![Screenshot_2023-04-29_014646](https://user-images.githubusercontent.com/43894897/235313593-2791ca51-79da-4442-83f8-d8c8bb555357.jpg)
+![Screenshot_2023-04-29_111823](https://user-images.githubusercontent.com/43894897/235313595-eb3a03bd-5b40-46c1-bbbf-736536053ea6.jpg)
+![Screenshot_2023-04-29_111831](https://user-images.githubusercontent.com/43894897/235313596-51aece58-db22-422f-a020-80fd66de7796.jpg)
+![Screenshot_2023-04-29_111848](https://user-images.githubusercontent.com/43894897/235313597-c72501d7-6fea-4724-abb6-1f25e2e75bc9.jpg)
+![Screenshot_2023-03-21_161003](https://user-images.githubusercontent.com/43894897/235313599-e7afb322-46f4-43ae-9f47-3a8b45b73f38.jpg)
+![Screenshot_2023-03-21_161026](https://user-images.githubusercontent.com/43894897/235313600-5b4e2f0e-4605-4dd2-90e9-7f6486f719ec.jpg)
+![Screenshot_2023-03-21_161030](https://user-images.githubusercontent.com/43894897/235313601-1b6f2da3-45d5-446f-b091-52413b8c6268.jpg)
+![Screenshot_2023-03-21_161035](https://user-images.githubusercontent.com/43894897/235313603-870c6433-03e5-4b12-b80f-4b255e16b8b6.jpg)
+![Screenshot_2023-03-21_161040](https://user-images.githubusercontent.com/43894897/235313604-f0b49cfb-8234-4061-a3e1-f9700460751a.jpg)
+![Screenshot_2023-03-21_161049](https://user-images.githubusercontent.com/43894897/235313605-1cbf9e7c-082e-4b49-9dfc-dbd90e9be2aa.jpg)
+![Screenshot_2023-03-21_161134](https://user-images.githubusercontent.com/43894897/235313606-bd35077d-7513-4727-a1e3-d82f2c564e86.jpg)
+![Screenshot_2023-04-29_012713](https://user-images.githubusercontent.com/43894897/235313607-9a44844c-39fa-42d6-a282-7ab79eb2e364.jpg)
+![Screenshot_2023-04-29_012722](https://user-images.githubusercontent.com/43894897/235313608-6e52a3c5-5236-49dd-9c92-b6ba22ed8802.jpg)
+![Screenshot_2023-04-29_012727](https://user-images.githubusercontent.com/43894897/235313609-9ce00ae4-7915-4e66-b31e-6eddbe69914d.jpg)
+![Screenshot_2023-04-29_012919](https://user-images.githubusercontent.com/43894897/235313610-f8bafe17-0a3e-4849-8bdd-caa94616050f.jpg)
